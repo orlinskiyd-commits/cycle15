@@ -49,8 +49,8 @@
 
   --t1: #ede8ff;
   --t2: #9b90c0;
-  --t3: #584f78;
-  --t4: #2e2850;
+  --t3: #8b80aa;
+  --t4: #584f78;
   --red: #ff4757;
 
   --font-d: 'Russo One', system-ui, -apple-system, sans-serif;
@@ -104,8 +104,8 @@ button { font-family: var(--font-b); cursor: pointer; }
 .d2 { font-family:var(--font-d); font-size:1.4rem; line-height:1.1; }
 .d3 { font-family:var(--font-d); font-size:1.1rem; line-height:1.2; }
 .label {
-  font-size:.55rem; font-weight:700;
-  letter-spacing:.2em; text-transform:uppercase;
+  font-size:.65rem; font-weight:700;
+  letter-spacing:.18em; text-transform:uppercase;
   color: var(--t3);
 }
 .mono { font-family:var(--font-m); }
@@ -164,7 +164,7 @@ button { font-family: var(--font-b); cursor: pointer; }
 }
 .nb.active { color:var(--portal); }
 .nb-icon { font-size:1.2rem; }
-.nb-label { font-size:.5rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase; }
+.nb-label { font-size:.60rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; }
 
 /* ── ПОРТАЛ ─────────────────────────────────────── */
 @keyframes spin { to { transform:rotate(360deg); } }
@@ -248,7 +248,7 @@ button { font-family: var(--font-b); cursor: pointer; }
 .pickle-mode::before {
   content:'🥒 PICKLE RICK MODE';
   display:block; padding:6px 16px;
-  font-size:.52rem; font-weight:700; letter-spacing:.2em;
+  font-size:.64rem; font-weight:700; letter-spacing:.2em;
   color:var(--portal); background:var(--p08);
   border-bottom:1px solid var(--p15);
   text-align:center;
@@ -407,7 +407,7 @@ button { font-family: var(--font-b); cursor: pointer; }
   display:inline-flex; align-items:center; gap:5px;
   padding:4px 10px;
   border-radius:var(--r99);
-  font-size:.58rem; font-weight:700;
+  font-size:.68rem; font-weight:700;
   letter-spacing:.1em; text-transform:uppercase;
   border:1px solid transparent;
 }
@@ -519,7 +519,7 @@ button { font-family: var(--font-b); cursor: pointer; }
   border:1px solid var(--bd);
 }
 .metric-val { font-family:var(--font-m); font-size:.9rem; font-weight:700; }
-.metric-lbl { font-size:.48rem; color:var(--t3); text-transform:uppercase; letter-spacing:.14em; margin-top:2px; }
+.metric-lbl { font-size:.60rem; color:var(--t3); text-transform:uppercase; letter-spacing:.12em; margin-top:2px; }
 
 /* ── GRID МЕТРИК ────────────────────────────────── */
 .metrics-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
@@ -528,7 +528,7 @@ button { font-family: var(--font-b); cursor: pointer; }
   border-radius:var(--r12); padding:12px 14px;
 }
 .metric-cell-val { font-family:var(--font-m); font-size:1.2rem; font-weight:700; }
-.metric-cell-lbl { font-size:.52rem; color:var(--t3); text-transform:uppercase; letter-spacing:.14em; margin-top:3px; }
+.metric-cell-lbl { font-size:.62rem; color:var(--t3); text-transform:uppercase; letter-spacing:.12em; margin-top:3px; }
 
 /* ── РАСПИСАНИЕ ─────────────────────────────────── */
 .sched-item {
@@ -1150,7 +1150,48 @@ function finishWorkout(){
 }
 function doCorrect(){shiftSchedule(S.summary.rec.date);S.summary.needsCorrection=false;S.summary.corrected=true;render();}
 function skipCorrect(){S.summary.needsCorrection=false;render();}
-function closeSummary(){S.summary=null;S.screen='home';render();}
+function closeSummary(){
+  // Фича 1: при закрытии итогов 24-й тренировки показываем модалку завершения цикла
+  if(S.summary && S.summary.rec && S.summary.rec.sessionN === 23){
+    S.summary=null; S.screen='home'; render();
+    setTimeout(()=>showCycleCompleteModal(), 200);
+  } else {
+    S.summary=null; S.screen='home'; render();
+  }
+}
+
+function showCycleCompleteModal(){
+  const old2 = document.getElementById('_cycle_modal');
+  if(old2) old2.remove();
+  const modal = document.createElement('div');
+  modal.id = '_cycle_modal';
+  modal.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(3,2,10,.9);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto';
+  modal.innerHTML = `
+    <div style="background:var(--s2);border:1px solid var(--p30);border-radius:20px;padding:28px 20px;max-width:380px;width:100%;box-shadow:0 0 60px var(--p15);text-align:center">
+      <div style="font-size:2.4rem;margin-bottom:8px">🎉</div>
+      <div style="font-family:var(--font-d);font-size:1.3rem;color:var(--portal);margin-bottom:4px;text-shadow:0 0 20px var(--p30)">WUBBA LUBBA DUB DUB!</div>
+      <div style="font-size:.72rem;color:var(--rick);margin-bottom:16px;font-weight:700">24/24 — МАКРОЦИКЛ ЗАВЕРШЁН, C-137!</div>
+      <div style="background:var(--p08);border:1px solid var(--p15);border-radius:12px;padding:14px;margin-bottom:16px;font-size:.72rem;color:var(--t2);line-height:1.7;text-align:left">
+        [S03E07] «Поздравляю, Морти. Ты прошёл все 24 сессии. Знаешь что это значит? Измерение C-137 переходит на следующий виток. Szechuan Sauce Score™ заработан честно. Теперь — протестируй новый ПМ и запускай цикл заново. Наука не ждёт.»<br><br>
+        <span style="color:var(--portal)">⚗️ Протестируй новый 1ПМ жима и приседа, затем нажми «Новый цикл» чтобы очистить историю и начать с актуальными данными.</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <button onclick="document.getElementById('_cycle_modal').remove();resetCycle();navTo('setup')" style="width:100%;padding:14px;border:none;border-radius:12px;background:var(--portal);color:#000;font-family:var(--font-d);font-size:.9rem;cursor:pointer;letter-spacing:.05em">🚀 НОВЫЙ ЦИКЛ</button>
+        <button onclick="document.getElementById('_cycle_modal').remove()" style="width:100%;padding:12px;border:1px solid var(--bd2);border-radius:12px;background:var(--s3);color:var(--t2);font-family:var(--font-b);font-size:.78rem;cursor:pointer">Закрыть — посмотрю историю</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+}
+
+function resetCycle(){
+  S.sessionCount=0;
+  S.history=[];
+  S.workout=null;
+  S.summary=null;
+  saveSave();
+  render();
+}
 function navTo(s){S.screen=s;render();}
 function toggleHist(i){const el=document.getElementById('hb'+i);if(el)el.style.display=el.style.display==='none'?'block':'none';}
 
@@ -1375,7 +1416,7 @@ function setupHTML(){
           <div style="font-size:.62rem;color:var(--t3);margin-top:8px">
             ${S.trainingDays.slice().sort((a,b)=>a-b).map(d=>DAY_NAMES[d]).join(', ')}
           </div>
-          <div style="font-size:.58rem;color:${S.trainingDays.length>=2?'var(--portal)':'var(--red)'};margin-top:4px">
+          <div style="font-size:.68rem;color:${S.trainingDays.length>=2?'var(--portal)':'var(--red)'};margin-top:4px">
             ${S.trainingDays.length>=2?'✅ 2 дня выбрано — оптимально для программы':'⚠️ Выбери ровно 2 дня в неделю'}
           </div>
         </div>
@@ -1429,14 +1470,14 @@ function homeHTML(){
     return `<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px;${i?'border-top:1px solid var(--bd)':''}">
       <div>
         <div style="font-size:.82rem;font-weight:700">${esc(ex.name)}</div>
-        <div style="font-size:.58rem;color:var(--t3);margin-top:2px">${esc(ex.hint)}</div>
-        ${H(exLore(exDef.id),'<div style="font-size:.52rem;color:var(--t4);margin-top:1px;font-style:italic">'+exLore(exDef.id)+'</div>')}
+        <div style="font-size:.68rem;color:var(--t3);margin-top:2px">${esc(ex.hint)}</div>
+        ${H(exLore(exDef.id),'<div style="font-size:.64rem;color:var(--t4);margin-top:1px;font-style:italic">'+exLore(exDef.id)+'</div>')}
       </div>
       <div style="display:flex;align-items:center;gap:10px">
         <span class="badge badge-${loadClass(exDef.load)}">${loadEmoji(exDef.load)} ${loadLabel(exDef.load)}</span>
         <div style="text-align:right;min-width:54px">
           <div style="font-family:var(--font-m);font-size:.88rem;font-weight:700;color:${lc}">${w} кг</div>
-          <div style="font-size:.52rem;color:var(--t3)">${pctStr(main.p)}</div>
+          <div style="font-size:.64rem;color:var(--t3)">${pctStr(main.p)}</div>
         </div>
       </div>
     </div>`;
@@ -1453,9 +1494,9 @@ function homeHTML(){
       <div class="sched-dot" style="background:${dotColor};${isNow?'box-shadow:0 0 6px var(--portal)':''}"></div>
       <div style="flex:1">
         <div style="font-size:.76rem;font-weight:${isNow?700:500};color:${isNow?'var(--portal)':isPst?'var(--t3)':'var(--t1)'}">
-          ${fmtDate(d)}${todayMatch&&!isPst?' <span style="font-size:.58rem;color:var(--portal)">· сегодня</span>':''}
+          ${fmtDate(d)}${todayMatch&&!isPst?' <span style="font-size:.68rem;color:var(--portal)">· сегодня</span>':''}
         </div>
-        <div style="font-size:.56rem;color:var(--t3);margin-top:1px">С${i+1} · ${dimension(i)}</div>
+        <div style="font-size:.66rem;color:var(--t3);margin-top:1px">С${i+1} · ${dimension(i)}</div>
       </div>
       ${isPst?'<span style="font-size:.82rem">✅</span>':H(isNow,'<span style="font-size:.7rem;font-weight:700;color:var(--portal)">→</span>')}
     </div>`);
@@ -1479,17 +1520,17 @@ function homeHTML(){
       <div class="card" style="padding:12px;text-align:center;border-color:var(--p15)">
         <div class="label" style="margin-bottom:4px">Жим ПМ</div>
         <div class="mono" style="font-size:1.05rem;font-weight:700;color:var(--portal)">${bench.toFixed(1)}</div>
-        <div style="font-size:.48rem;color:var(--t3);margin-top:2px">база ${S.benchPM} кг</div>
+        <div style="font-size:.62rem;color:var(--t3);margin-top:2px">база ${S.benchPM} кг</div>
       </div>
       <div class="card" style="padding:12px;text-align:center;border-color:var(--r20)">
         <div class="label" style="margin-bottom:4px">Присед ПМ</div>
         <div class="mono" style="font-size:1.05rem;font-weight:700;color:var(--rick)">${squat.toFixed(1)}</div>
-        <div style="font-size:.48rem;color:var(--t3);margin-top:2px">база ${S.squatPM} кг</div>
+        <div style="font-size:.62rem;color:var(--t3);margin-top:2px">база ${S.squatPM} кг</div>
       </div>
       <div class="card" style="padding:12px;text-align:center;border-color:var(--m20)">
         <div class="label" style="margin-bottom:4px">Рост/нед</div>
         <div class="mono" style="font-size:1.05rem;font-weight:700;color:var(--morty)">+${S.corrPct}%</div>
-        <div style="font-size:.48rem;color:var(--t3);margin-top:2px">нед ${week+1}</div>
+        <div style="font-size:.62rem;color:var(--t3);margin-top:2px">нед ${week+1}</div>
       </div>
     </div>
 
@@ -1513,7 +1554,7 @@ function homeHTML(){
         <div style="margin-top:12px;background:var(--s3);border-radius:var(--r12);padding:10px 12px;border:1px solid var(--bd)">
           <div class="label" style="margin-bottom:4px">🏃 Разминка — «Без разминки ты сломаешься быстрее чем Джерри на собеседовании»</div>
           <div style="font-size:.68rem;color:var(--t2);line-height:1.5">${esc(sess.warmup)}</div>
-          <div style="font-size:.54rem;color:var(--t3);margin-top:4px">+ 30 мин разминка / заминка / растяжка</div>
+          <div style="font-size:.65rem;color:var(--t3);margin-top:4px">+ 30 мин разминка / заминка / растяжка</div>
         </div>
       </div>
       <!-- Упражнения -->
@@ -1583,13 +1624,13 @@ function workoutHTML(){
               <div style="display:flex;align-items:center;gap:8px;margin-top:6px">
                 <div style="background:${clDone?'var(--p15)':'var(--s4)'};border:1.5px solid ${clDone?'var(--portal)':'var(--bd2)'};border-radius:8px;padding:4px 10px;display:flex;align-items:center;gap:5px">
                   <span style="font-family:var(--font-d);font-size:1.1rem;color:${clDone?'var(--portal)':lc}">${c.reps}</span>
-                  <span style="font-size:.58rem;color:var(--t2);font-weight:700;text-transform:uppercase;letter-spacing:.1em">повт</span>
+                  <span style="font-size:.68rem;color:var(--t2);font-weight:700;text-transform:uppercase;letter-spacing:.1em">повт</span>
                 </div>
                 <div style="font-size:.6rem;color:var(--t3)">${c.doneSets}/${c.numSets} подх</div>
               </div>
             </div>
             <div style="text-align:right">
-              <div style="font-size:.58rem;color:var(--t3)">ПМ</div>
+              <div style="font-size:.68rem;color:var(--t3)">ПМ</div>
               <div class="mono" style="font-size:.8rem;color:var(--t2)">${ex.pm.toFixed(0)} кг</div>
             </div>
           </div>
@@ -1605,10 +1646,12 @@ function workoutHTML(){
       </div>`:'';
 
       body=`<div class="cluster-wrap">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-          <span class="badge badge-${loadClass(ex.load)}">${loadEmoji(ex.load)} ${loadLabel(ex.load)}</span>
-          <span style="font-size:.6rem;color:var(--t3)">к${meta.koef} · ${esc(meta.hint)}</span>
-          ${H(exLore(ex.id),'<div style="font-size:.54rem;color:var(--t4);margin-top:4px;font-style:italic">'+exLore(ex.id)+'</div>')}
+        <div style="margin-bottom:12px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+            <span class="badge badge-${loadClass(ex.load)}">${loadEmoji(ex.load)} ${loadLabel(ex.load)}</span>
+            <span style="font-size:.64rem;color:var(--t3)">к${meta.koef} · ${esc(meta.hint)}</span>
+          </div>
+          ${H(exLore(ex.id),'<div style="font-size:.65rem;color:var(--t4);font-style:italic">'+exLore(ex.id)+'</div>')}
         </div>
         ${clusters}
         ${mtrRow}
@@ -1627,7 +1670,7 @@ function workoutHTML(){
         </div>
         <div style="text-align:right">
           <div class="mono" style="font-size:.8rem;font-weight:700;color:${lc}">${ex.pm.toFixed(0)} кг</div>
-          <div style="font-size:.54rem;color:var(--t3);margin-top:2px">${doneEx}/${totalEx} подх</div>
+          <div style="font-size:.65rem;color:var(--t3);margin-top:2px">${doneEx}/${totalEx} подх</div>
         </div>
       </button>
       ${body}
@@ -1645,7 +1688,7 @@ function workoutHTML(){
         <div>
           <div class="label" style="margin-bottom:3px">📅 ${fmtFull(new Date())}</div>
           <div class="d3">Сессия ${W.sessionN+1}/24 · <span style="color:var(--portal)">${W.sessionN===23 ? String.fromCodePoint(9760)+' EVIL MORTY' : dimension(W.sessionN)}</span></div>
-          ${H(!dateOk,'<div style="font-size:.58rem;color:var(--red);margin-top:2px">⚠️ По плану: '+fmtDate(new Date(W.plannedDate))+'</div>')}
+          ${H(!dateOk,'<div style="font-size:.68rem;color:var(--red);margin-top:2px">⚠️ По плану: '+fmtDate(new Date(W.plannedDate))+'</div>')}
         </div>
         <div style="display:flex;align-items:center;gap:8px">
           <span id="tmr" class="mono" style="font-size:.82rem;color:var(--t2)">${timeStr(elapsed)}</span>
@@ -1716,14 +1759,14 @@ function summaryHTML(){
     return`<div style="padding:10px 0;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center">
       <div>
         <div style="font-size:.78rem;font-weight:700">${esc(meta.name)}</div>
-        <div style="font-size:.58rem;color:var(--t3);margin-top:2px">
+        <div style="font-size:.68rem;color:var(--t3);margin-top:2px">
           <span class="badge badge-${loadClass(ex.load||'medium')}" style="font-size:.5rem">${loadEmoji(ex.load||'medium')} ${loadLabel(ex.load||'medium')}</span>
           <span style="margin-left:6px">ПМ ${ex.pm.toFixed(1)} кг · КПШ ${ex.kpsh}</span>
         </div>
       </div>
       <div style="text-align:right">
         <div class="mono" style="font-size:.82rem;font-weight:700;color:${lc}">${ex.tonnage.toFixed(0)} кг</div>
-        <div style="font-size:.54rem;color:var(--t3)">ОИ ${pctStr(ex.oi)}</div>
+        <div style="font-size:.65rem;color:var(--t3)">ОИ ${pctStr(ex.oi)}</div>
       </div>
     </div>`;
   }).join('');
@@ -1741,7 +1784,7 @@ function summaryHTML(){
 
     <div class="card" style="padding:16px;margin-bottom:12px">
       <div class="label" style="color:var(--portal);margin-bottom:12px">📊 LMS · Портальный Анализ C-137</div>
-      <div style="font-size:.52rem;color:var(--t3);margin-bottom:12px;font-family:var(--font-m)">// session.metrics.calculate() → OK</div>
+      <div style="font-size:.64rem;color:var(--t3);margin-bottom:12px;font-family:var(--font-m)">// session.metrics.calculate() → OK</div>
       <div style="font-size:.6rem;color:var(--t4);margin-bottom:10px;font-style:italic">[S01E09] «Какова твоя цель?» — «Передавать масло» — «О боже... Добро пожаловать в клуб.»</div>
       <div class="metrics-grid">
         <div class="metric-cell"><div class="metric-cell-val num-glow" style="color:var(--portal)">${rec.total.tonnage.toFixed(0)}</div><div class="metric-cell-lbl">Тоннаж кг</div></div>
@@ -1790,11 +1833,11 @@ function historyHTML(){
       return`<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--bd)">
         <div>
           <div style="font-size:.74rem;font-weight:700">${esc(meta.name)}</div>
-          <div style="font-size:.58rem;color:var(--t3);margin-top:1px">${loadEmoji(ex.load||'medium')} ${loadLabel(ex.load||'medium')} · КПШ ${ex.kpsh}</div>
+          <div style="font-size:.68rem;color:var(--t3);margin-top:1px">${loadEmoji(ex.load||'medium')} ${loadLabel(ex.load||'medium')} · КПШ ${ex.kpsh}</div>
         </div>
         <div style="text-align:right">
           <div class="mono" style="color:${lc2};font-weight:700">${ex.tonnage.toFixed(0)} кг</div>
-          <div style="font-size:.54rem;color:var(--t3)">ОИ ${pctStr(ex.oi)}</div>
+          <div style="font-size:.65rem;color:var(--t3)">ОИ ${pctStr(ex.oi)}</div>
         </div>
       </div>`;
     }).join('');
@@ -1834,7 +1877,7 @@ function progressHTML(){
     return`<div style="padding:10px 16px;border-top:1px solid var(--bd);display:flex;align-items:center">
       <div style="flex:1">
         <div style="font-size:.78rem;font-weight:700">${esc(meta.name)}</div>
-        <div style="font-size:.56rem;color:var(--t3);margin-top:1px">к${meta.koef} · ${meta.pmOf==='squat'?'присед':'жим'} × ${meta.ratio}</div>
+        <div style="font-size:.66rem;color:var(--t3);margin-top:1px">к${meta.koef} · ${meta.pmOf==='squat'?'присед':'жим'} × ${meta.ratio}</div>
       </div>
       <div class="mono" style="font-size:.9rem;font-weight:700;color:var(--portal)">${pm.toFixed(1)} кг</div>
     </div>`;
