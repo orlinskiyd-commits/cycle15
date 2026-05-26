@@ -1,0 +1,1895 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#03020a">
+<title>LMS Gym · C-137</title>
+<!-- Шрифты грузятся асинхронно, не блокируя рендер -->
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Russo+One&family=Exo+2:wght@400;700;900&family=Share+Tech+Mono&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Russo+One&family=Exo+2:wght@400;700;900&family=Share+Tech+Mono&display=swap"></noscript>
+<style>
+/* ════════════════════════════════════════════════
+   PORTAL LABS · DESIGN SYSTEM
+   Rick & Morty Fitness OS · Dimension C-137
+════════════════════════════════════════════════ */
+:root {
+  --void:   #03020a;
+  --s1:     #08061a;
+  --s2:     #0e0b24;
+  --s3:     #16122e;
+  --s4:     #1e1a3a;
+  --bd:     #26204a;
+  --bd2:    #3a2f65;
+
+  --portal: #39ff14;
+  --p30:    rgba(57,255,20,.30);
+  --p15:    rgba(57,255,20,.15);
+  --p08:    rgba(57,255,20,.08);
+
+  --rick:   #00d9ff;
+  --r20:    rgba(0,217,255,.20);
+  --r08:    rgba(0,217,255,.08);
+
+  --morty:  #f5c518;
+  --m20:    rgba(245,197,24,.20);
+  --m08:    rgba(245,197,24,.08);
+
+  --purple: #a855f7;
+
+  --heavy-c: #ff6060;
+  --heavy-bg: rgba(255,96,96,.12);
+  --med-c:   #f5c518;
+  --med-bg:  rgba(245,197,24,.12);
+  --lite-c:  #69f0ae;
+  --lite-bg: rgba(105,240,174,.12);
+
+  --t1: #ede8ff;
+  --t2: #9b90c0;
+  --t3: #584f78;
+  --t4: #2e2850;
+  --red: #ff4757;
+
+  --font-d: 'Russo One', system-ui, -apple-system, sans-serif;
+  --font-b: 'Exo 2', system-ui, -apple-system, sans-serif;
+  --font-m: 'Share Tech Mono', ui-monospace, 'Courier New', monospace;
+
+  --r4:  4px;
+  --r8:  8px;
+  --r12: 12px;
+  --r16: 16px;
+  --r20: 20px;
+  --r99: 100px;
+}
+
+* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent }
+
+html, body {
+  background: var(--void);
+  color: var(--t1);
+  font-family: var(--font-b);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Космический фон */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 15% 10%, rgba(57,255,20,.06) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 85% 85%, rgba(0,217,255,.05) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 60% at 50% 50%, rgba(168,85,247,.03) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+#app {
+  max-width: 430px;
+  margin: 0 auto;
+  min-height: 100vh;
+  padding-bottom: 80px;
+  position: relative;
+  z-index: 1;
+}
+
+button { font-family: var(--font-b); cursor: pointer; }
+
+/* ── ТИПОГРАФИЯ ─────────────────────────────────── */
+.d1 { font-family:var(--font-d); font-size:2rem; line-height:1; }
+.d2 { font-family:var(--font-d); font-size:1.4rem; line-height:1.1; }
+.d3 { font-family:var(--font-d); font-size:1.1rem; line-height:1.2; }
+.label {
+  font-size:.55rem; font-weight:700;
+  letter-spacing:.2em; text-transform:uppercase;
+  color: var(--t3);
+}
+.mono { font-family:var(--font-m); }
+
+/* ── КАРТОЧКИ ───────────────────────────────────── */
+.card {
+  background: var(--s2);
+  border: 1px solid var(--bd);
+  border-radius: var(--r20);
+  overflow: hidden;
+}
+.card-glow-g { border-color:var(--p30); box-shadow:0 0 24px var(--p08), inset 0 1px 0 var(--p15); }
+.card-glow-b { border-color:var(--r20); box-shadow:0 0 24px var(--r08), inset 0 1px 0 var(--r20); }
+.card-glow-y { border-color:var(--m20); box-shadow:0 0 24px var(--m08), inset 0 1px 0 var(--m20); }
+
+/* ── КНОПКИ ─────────────────────────────────────── */
+.btn-primary {
+  width:100%; padding:16px 24px;
+  border:none; border-radius: var(--r16);
+  font-family:var(--font-d); font-size:.95rem;
+  color:#000; text-transform:uppercase; letter-spacing:.06em;
+  cursor:pointer; position:relative; overflow:hidden;
+  transition: transform .12s, box-shadow .12s;
+}
+.btn-primary:active { transform:scale(.97); }
+.btn-primary.green  { background:var(--portal); box-shadow:0 4px 24px var(--p30); }
+.btn-primary.blue   { background:var(--rick);   box-shadow:0 4px 24px var(--r20); color:#000; }
+
+.btn-ghost {
+  padding:8px 16px;
+  border:1px solid var(--bd2);
+  border-radius:var(--r8);
+  background:var(--s3);
+  color:var(--t2);
+  font-size:.72rem; font-weight:700;
+}
+.btn-ghost:active { background:var(--s4); }
+
+/* ── НАВИГАЦИЯ ──────────────────────────────────── */
+#nav {
+  position:fixed; bottom:0;
+  left:50%; transform:translateX(-50%);
+  width:100%; max-width:430px;
+  background: rgba(8,6,26,.92);
+  backdrop-filter: blur(20px) saturate(1.5);
+  border-top:1px solid var(--bd);
+  display:flex; z-index:100;
+}
+.nb {
+  flex:1; padding:12px 0 14px;
+  background:none; border:none;
+  display:flex; flex-direction:column;
+  align-items:center; gap:4px;
+  color:var(--t3);
+  transition: color .15s;
+}
+.nb.active { color:var(--portal); }
+.nb-icon { font-size:1.2rem; }
+.nb-label { font-size:.5rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase; }
+
+/* ── ПОРТАЛ ─────────────────────────────────────── */
+@keyframes spin { to { transform:rotate(360deg); } }
+@keyframes portal-pulse { 0%,100%{opacity:.8}50%{opacity:1} }
+/* ── Силуэт Рика — фоновый декор ────────────── */
+.rick-silhouette {
+  position:fixed; bottom:80px; right:-8px;
+  pointer-events:none; z-index:0;
+  opacity:.05; filter:drop-shadow(0 0 12px var(--portal));
+  animation:float 6s ease-in-out infinite;
+}
+
+/* ── Терминальные данные — scan-line ──────────── */
+@keyframes scanline {
+  0%   { background-position:0 0; }
+  100% { background-position:0 100px; }
+}
+.terminal-card {
+  background:var(--s2);
+  border:1px solid var(--portal);
+  border-radius:var(--r12);
+  position:relative; overflow:hidden;
+}
+.terminal-card::after {
+  content:'';
+  position:absolute; inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(57,255,20,.015) 2px,rgba(57,255,20,.015) 4px);
+  pointer-events:none;
+  animation:scanline 8s linear infinite;
+}
+
+/* ── Рик говорит / Морти говорит ─────────────── */
+.speech-rick {
+  border-left:3px solid var(--portal);
+  background:var(--p08); color:var(--portal);
+  padding:8px 12px; border-radius:0 var(--r8) var(--r8) 0;
+  font-size:.68rem; font-style:italic; line-height:1.5;
+}
+.speech-rick::before { content:'Рик: '; font-style:normal; font-weight:700; }
+
+.speech-morty {
+  border-left:3px solid var(--morty);
+  background:var(--m08); color:var(--morty);
+  padding:8px 12px; border-radius:0 var(--r8) var(--r8) 0;
+  font-size:.68rem; font-style:italic; line-height:1.5;
+}
+.speech-morty::before { content:'Морти: '; font-style:normal; font-weight:700; }
+
+/* ── Улучшенный Evil Morty ───────────────────── */
+.evil-morty-banner {
+  background:linear-gradient(135deg,rgba(255,71,87,.18),rgba(168,85,247,.15));
+  border:1px solid rgba(255,71,87,.5);
+  border-radius:var(--r12); padding:12px 16px;
+  margin-bottom:10px;
+  box-shadow:0 0 20px rgba(255,71,87,.15);
+}
+
+/* ── Портал-пульс на числах ─────────────────── */
+.num-glow {
+  text-shadow:0 0 12px currentColor;
+  animation:glow-pulse 2s ease-in-out infinite;
+}
+
+/* ── Звёздное небо ───────────────────────────── */
+@keyframes twinkle {
+  0%,100% { opacity:.15; transform:scale(1); }
+  50%      { opacity:.7;  transform:scale(1.4); }
+}
+/* ── Портальные украшения ───────────────────── */
+.portal-decor {
+  position:absolute; border-radius:50%;
+  background:conic-gradient(from 0deg,#39ff14,#00d9ff,#a855f7,#39ff14);
+  opacity:.12; pointer-events:none;
+  animation:spin 6s linear infinite;
+}
+/* ── Pickle Rick режим ───────────────────────── */
+.pickle-mode {
+  background:linear-gradient(135deg,rgba(57,255,20,.12),rgba(0,217,255,.08));
+  border-color:var(--p30) !important;
+}
+.pickle-mode::before {
+  content:'🥒 PICKLE RICK MODE';
+  display:block; padding:6px 16px;
+  font-size:.52rem; font-weight:700; letter-spacing:.2em;
+  color:var(--portal); background:var(--p08);
+  border-bottom:1px solid var(--p15);
+  text-align:center;
+}
+/* ── R&M Отсылки ─────────────────────────────── */
+@keyframes glitch {
+  0%,92%,100% { text-shadow:none; transform:none; }
+  93% { text-shadow:2px 0 var(--rick),-2px 0 var(--red); transform:skewX(-2deg); }
+  96% { text-shadow:-2px 0 var(--portal),2px 0 var(--purple); transform:skewX(1deg); }
+  98% { text-shadow:none; transform:none; }
+}
+.glitch { animation:glitch 6s ease-in-out infinite; }
+
+@keyframes float {
+  0%,100% { transform:translateY(0); }
+  50%      { transform:translateY(-5px); }
+}
+.float { animation:float 3s ease-in-out infinite; }
+
+.rick-quote {
+  background:var(--r08);
+  border-left:3px solid var(--rick);
+  border-radius:0 var(--r12) var(--r12) 0;
+  padding:10px 14px;
+  font-size:.7rem; font-style:italic;
+  color:var(--rick); line-height:1.6;
+}
+.morty-note {
+  background:var(--m08);
+  border-left:3px solid var(--morty);
+  border-radius:0 var(--r12) var(--r12) 0;
+  padding:8px 12px;
+  font-size:.65rem; color:var(--morty); line-height:1.5;
+}
+.badge-pickle  { background:rgba(57,255,20,.15); color:var(--portal); border-color:var(--p30); }
+.badge-portal  { background:var(--r08); color:var(--rick);   border-color:var(--r20); }
+.badge-jerry   { background:rgba(90,79,122,.3); color:var(--t2);    border-color:var(--bd2); }
+
+
+/* ── СПЛЭШ ───────────────────────────────────────────── */
+
+
+
+
+
+
+@keyframes scan {
+  0%  { transform:translateY(-100%); opacity:.6; }
+  100%{ transform:translateY(100vh);  opacity:0; }
+}
+
+
+/* ── Фоновый портал ──────────────────────────────────── */
+#portal-bg {
+  position:fixed; right:-80px; top:20%; z-index:0;
+  width:260px; height:260px; border-radius:50%;
+  background:conic-gradient(from 0deg,rgba(57,255,20,.07),rgba(0,217,255,.05),rgba(168,85,247,.06),rgba(57,255,20,.07));
+  animation:spin 20s linear infinite;
+  pointer-events:none;
+  filter:blur(1px);
+}
+#portal-bg::after {
+  content:''; position:absolute; inset:20px; border-radius:50%;
+  background:radial-gradient(circle,rgba(57,255,20,.04) 0%,transparent 70%);
+}
+/* ── Сканлайны на sticky-header ──────────────────────── */
+.sticky-hdr::after {
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(57,255,20,.015) 2px,rgba(57,255,20,.015) 4px);
+}
+/* ── Анимированный портальный фон ────────────── */
+@keyframes portal-bg-spin {
+  from { transform:translate(-50%,-50%) rotate(0deg); }
+  to   { transform:translate(-50%,-50%) rotate(360deg); }
+}
+.portal-bg-decor {
+  position:fixed; width:600px; height:600px; border-radius:50%;
+  top:40%; left:50%;
+  background:conic-gradient(from 0deg,rgba(57,255,20,.03),rgba(0,217,255,.02),rgba(168,85,247,.03),transparent,rgba(57,255,20,.03));
+  animation:portal-bg-spin 30s linear infinite;
+  pointer-events:none; z-index:0;
+  filter:blur(40px);
+  will-change:transform;
+}
+
+/* ── Попап завершения упражнения ─────────────── */
+@keyframes popup-in  { from{opacity:0;transform:translateY(20px) scale(.9)} to{opacity:1;transform:translateY(0) scale(1)} }
+@keyframes popup-out { from{opacity:1;transform:scale(1)} to{opacity:0;transform:scale(.8)} }
+.ex-popup {
+  position:fixed; bottom:100px; left:50%; transform:translateX(-50%);
+  background:var(--s3); border:1px solid var(--p30);
+  border-radius:var(--r99); padding:10px 20px;
+  font-size:.78rem; font-weight:700; color:var(--portal);
+  box-shadow:0 4px 24px var(--p15);
+  animation:popup-in .3s ease both;
+  z-index:200; white-space:nowrap;
+  max-width:90vw; text-align:center;
+}
+
+/* ── Evil Morty режим (сессия 24) ────────────── */
+.evil-morty-banner {
+  background:linear-gradient(135deg,rgba(255,71,87,.15),rgba(168,85,247,.1));
+  border:1px solid rgba(255,71,87,.4);
+  border-radius:var(--r12); padding:10px 14px;
+  margin-bottom:10px; text-align:center;
+}
+
+/* ── Портальная пушка SVG ────────────────────── */
+.portal-gun { filter:drop-shadow(0 0 6px rgba(57,255,20,.5)); }
+
+/* ── Реакция персонажа (мысль-пузырь) ────────── */
+.char-bubble {
+  background:var(--s3); border:1px solid var(--bd);
+  border-radius:var(--r12) var(--r12) var(--r12) 4px;
+  padding:8px 12px; font-size:.68rem; color:var(--t2);
+  font-style:italic; line-height:1.5; position:relative;
+}
+.char-bubble::before {
+  content:''; position:absolute; bottom:-8px; left:16px;
+  border:4px solid transparent;
+  border-top-color:var(--bd);
+}
+
+.portal-ring {
+  width:56px; height:56px; border-radius:50%; flex-shrink:0;
+  background:conic-gradient(from 0deg,#39ff14,#00d9ff,#a855f7,#39ff14);
+  animation:spin 4s linear infinite;
+  display:flex; align-items:center; justify-content:center;
+  will-change:transform;
+}
+.portal-inner {
+  width:44px; height:44px; border-radius:50%;
+  background:var(--void);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.4rem;
+}
+
+/* ── ПРОГРЕСС-БАР ───────────────────────────────── */
+.pbar { height:3px; background:var(--s4); border-radius:99px; overflow:hidden; }
+.pbar-fill { height:100%; border-radius:99px; transition:width .4s ease; }
+
+/* ── БЕЙДЖИ НАГРУЗКИ ────────────────────────────── */
+.badge {
+  display:inline-flex; align-items:center; gap:5px;
+  padding:4px 10px;
+  border-radius:var(--r99);
+  font-size:.58rem; font-weight:700;
+  letter-spacing:.1em; text-transform:uppercase;
+  border:1px solid transparent;
+}
+.badge-heavy  { background:var(--heavy-bg); color:var(--heavy-c); border-color:rgba(255,96,96,.3); }
+.badge-medium { background:var(--med-bg);   color:var(--med-c);   border-color:rgba(245,197,24,.3); }
+.badge-light  { background:var(--lite-bg);  color:var(--lite-c);  border-color:rgba(105,240,174,.3); }
+
+/* ── ИНПУТЫ ─────────────────────────────────────── */
+.inp {
+  width:100%; padding:12px 16px;
+  background:var(--s3); border:1px solid var(--bd);
+  border-radius:var(--r12); color:var(--t1);
+  font-size:.9rem; font-family:var(--font-b);
+  outline:none; transition:border-color .15s, box-shadow .15s;
+}
+.inp:focus { border-color:var(--p30); box-shadow:0 0 0 3px var(--p08); }
+.inp[type=date]::-webkit-calendar-picker-indicator { filter:invert(.5); }
+
+/* ── ДЕНЬ КНОПКИ ────────────────────────────────── */
+.day-btn {
+  padding:10px 0;
+  border:1.5px solid var(--bd); border-radius:var(--r8);
+  background:var(--s3); color:var(--t3);
+  font-weight:700; font-size:.68rem;
+  transition:all .15s;
+}
+.day-btn.sel {
+  border-color:var(--portal); background:var(--p08);
+  color:var(--portal);
+}
+
+/* ── ЭКРАНЫ ─────────────────────────────────────── */
+.screen { padding:20px 16px; }
+
+/* ── ТРЕНИРОВКА ─────────────────────────────────── */
+.sticky-hdr {
+  position:sticky; top:0; z-index:20;
+  background:rgba(8,6,26,.95);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--bd);
+  padding:14px 16px 12px;
+}
+
+/* ── УПРАЖНЕНИЕ-КАРТА ───────────────────────────── */
+.ex-card {
+  background:var(--s2);
+  border:1px solid var(--bd);
+  border-radius:var(--r20);
+  overflow:hidden;
+  margin-bottom:8px;
+  transition:border-color .2s;
+}
+.ex-card.expanded { border-color:var(--bd2); }
+.ex-hdr-btn {
+  width:100%; background:none; border:none;
+  padding:14px 16px;
+  display:flex; align-items:center; gap:12px;
+  text-align:left;
+}
+
+/* Номер упражнения */
+.ex-num {
+  width:34px; height:34px; border-radius:50%; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  font-size:.72rem; font-weight:700;
+  border:2px solid var(--bd);
+  background:var(--s3); color:var(--t3);
+  transition:all .2s;
+}
+.ex-num.active { border-color:var(--portal); color:var(--portal); background:var(--p08); }
+.ex-num.done   { border-color:var(--portal); color:var(--portal); background:var(--p15);
+                  box-shadow:0 0 8px var(--p15); }
+
+/* ── КЛАСТЕРЫ ───────────────────────────────────── */
+.cluster-wrap { padding:0 16px 14px; }
+.cluster {
+  background:var(--s3); border:1px solid var(--bd);
+  border-radius:var(--r16); padding:14px;
+  margin-bottom:8px;
+}
+.cluster.done { background:rgba(57,255,20,.05); border-color:var(--p30); }
+.cluster-top { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:12px; }
+
+/* Кнопки подходов */
+.sets-row { display:flex; gap:8px; flex-wrap:wrap; }
+.set-btn {
+  width:42px; height:42px; border-radius:12px;
+  border:2px solid var(--bd);
+  background:var(--s4); color:var(--t3);
+  font-weight:700; font-size:.8rem;
+  transition:all .15s;
+  display:flex; align-items:center; justify-content:center;
+}
+.set-btn.done {
+  background:var(--p15); border-color:var(--portal);
+  color:var(--portal); box-shadow:0 0 10px var(--p15);
+}
+.set-btn:active { transform:scale(.92); }
+
+/* ── МЕТРИКИ ────────────────────────────────────── */
+.metrics-row {
+  display:flex; gap:8px;
+  padding:10px 14px 4px;
+  border-top:1px solid var(--bd);
+}
+.metric-chip {
+  flex:1; background:var(--s3); border-radius:var(--r8);
+  padding:8px 10px; text-align:center;
+  border:1px solid var(--bd);
+}
+.metric-val { font-family:var(--font-m); font-size:.9rem; font-weight:700; }
+.metric-lbl { font-size:.48rem; color:var(--t3); text-transform:uppercase; letter-spacing:.14em; margin-top:2px; }
+
+/* ── GRID МЕТРИК ────────────────────────────────── */
+.metrics-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.metric-cell {
+  background:var(--s3); border:1px solid var(--bd);
+  border-radius:var(--r12); padding:12px 14px;
+}
+.metric-cell-val { font-family:var(--font-m); font-size:1.2rem; font-weight:700; }
+.metric-cell-lbl { font-size:.52rem; color:var(--t3); text-transform:uppercase; letter-spacing:.14em; margin-top:3px; }
+
+/* ── РАСПИСАНИЕ ─────────────────────────────────── */
+.sched-item {
+  display:flex; align-items:center; gap:12px;
+  padding:10px 16px;
+  border-top:1px solid var(--bd);
+}
+.sched-dot {
+  width:8px; height:8px; border-radius:50%;
+  flex-shrink:0;
+}
+
+/* ── РАСКЛАДКА ИТОГОВ ───────────────────────────── */
+.sum-screen {
+  min-height:100vh;
+  padding:32px 16px 100px;
+}
+.sum-hero {
+  text-align:center;
+  padding:32px 16px 24px;
+}
+
+/* ── ИСТОРИЯ ────────────────────────────────────── */
+.hist-item {
+  background:var(--s2); border:1px solid var(--bd);
+  border-radius:var(--r16); overflow:hidden;
+  margin-bottom:8px; position:relative;
+}
+.hist-accent {
+  position:absolute; left:0; top:0; bottom:0; width:3px;
+}
+.hist-hdr-btn {
+  width:100%; background:none; border:none;
+  padding:12px 16px 12px 20px;
+  display:flex; align-items:center;
+  font-family:var(--font-b); text-align:left;
+}
+.hist-body { border-top:1px solid var(--bd); padding:10px 16px; }
+
+/* ── ЗАГЛУШКИ ───────────────────────────────────── */
+.empty-state { text-align:center; padding:60px 24px; }
+
+/* ── КОРРЕКТИРОВКА ДАТЫ ──────────────────────────── */
+.correction-card {
+  background:rgba(255,71,87,.06);
+  border:1px solid rgba(255,71,87,.25);
+  border-radius:var(--r16); padding:18px;
+  margin-bottom:14px;
+}
+
+/* ── РАЗДЕЛИТЕЛЬ СЕКЦИИ ──────────────────────────── */
+.section-hdr {
+  padding:10px 16px 8px;
+  border-bottom:1px solid var(--bd);
+  background:var(--s3);
+}
+
+/* ── АНИМАЦИИ ───────────────────────────────────── */
+@keyframes fade-up {
+  from { opacity:0; transform:translateY(12px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.fade-up { animation:fade-up .3s ease both; }
+
+@keyframes glow-pulse {
+  0%,100% { box-shadow:0 0 20px var(--p15); }
+  50%     { box-shadow:0 0 32px var(--p30); }
+}
+</style>
+</head>
+<body>
+<div id="portal-bg"></div>
+<div id="app"></div>
+<script>
+// ════════════════════════════════════════════════════════
+// LMS — СТРОГО ИЗ cycle15.numbers
+// Авторы: Бондаренко Дмитрий, Мякотин Вадим
+// ════════════════════════════════════════════════════════
+
+// ── УПРАЖНЕНИЯ ИЗ ФАЙЛА ──────────────────────────────────
+// Только те 6 упражнений, что есть в cycle15.numbers
+// ПМ-коэффициенты взяты из реальных данных файла:
+//   Жим гантелей: 43.2 / 135 = 0.32
+//   Бицепс стоя:  47.25 / 135 = 0.35
+//   Французский:  63.045 / 135 = 0.467
+//   Наклонный:    108 / 135 = 0.80
+const EX = {
+  bench1:  {name:'Жим лёжа',         hint:'штанга · основной',      koef:1.0, pmOf:'bench',       ratio:1.00},
+  bench2:  {name:'Жим лёжа',         hint:'штанга · дополнительный',koef:1.0, pmOf:'bench',       ratio:1.00},
+  squat:   {name:'Присед',           hint:'штанга',                 koef:1.2, pmOf:'squat',       ratio:1.00},
+  bicep:   {name:'Бицепс стоя',      hint:'штанга',                 koef:0.5, pmOf:'bench',       ratio:0.35},
+  db:      {name:'Жим гантелей',     hint:'гантели',                koef:0.8, pmOf:'bench',       ratio:0.32, step:1},
+  french:  {name:'Французский жим',  hint:'EZ-штанга',              koef:0.4, pmOf:'bench',       ratio:0.47},
+  incline: {name:'Жим на наклонной', hint:'штанга',                 koef:1.0, pmOf:'bench',       ratio:0.80},
+};
+
+const SESSIONS = [
+  { // С1
+    warmup:'Разгибание голени · Трицепс на блоке · Наружное вращение плеча · Лодочка',
+    exercises:[
+      {id:'bench1',load:'heavy',cl:[{p:0.56,r:4,n:1},{p:0.63,r:3,n:3},{p:0.7,r:1,n:2}]},
+      {id:'squat',load:'heavy',cl:[{p:0.55,r:4,n:1},{p:0.65,r:4,n:1},{p:0.75,r:3,n:2}]},
+      {id:'bench2',load:'heavy',cl:[{p:0.58,r:3,n:1},{p:0.67,r:2,n:2},{p:0.75,r:1,n:2},{p:0.8,r:1,n:2},{p:0.85,r:1,n:1}]},
+      {id:'bicep',load:'medium',cl:[{p:0.55,r:5,n:1},{p:0.62,r:5,n:4}]},
+      {id:'db',load:'medium',cl:[{p:0.55,r:6,n:1},{p:0.64,r:5,n:4}]},
+    ]
+  },
+  { // С2
+    warmup:'Верхняя и нижняя тяги · Пресс · Гиперэкстензии',
+    exercises:[
+      {id:'bench1',load:'heavy',cl:[{p:0.55,r:4,n:1},{p:0.65,r:3,n:1},{p:0.72,r:2,n:2},{p:0.8,r:1,n:2},{p:0.83,r:1,n:2}]},
+      {id:'squat',load:'heavy',cl:[{p:0.6,r:4,n:1},{p:0.7,r:3,n:2},{p:0.77,r:1,n:2}]},
+      {id:'bench2',load:'heavy',cl:[{p:0.6,r:4,n:1},{p:0.7,r:4,n:4}]},
+      {id:'french',load:'medium',cl:[{p:0.5,r:5,n:5}]},
+      {id:'incline',load:'heavy',cl:[{p:0.5,r:4,n:1},{p:0.6,r:3,n:1},{p:0.7,r:3,n:3}]},
+    ]
+  },
+  { // С3
+    warmup:'Разгибание голени · Трицепс на блоке · Наружное вращение плеча · Лодочка',
+    exercises:[
+      {id:'bench1',load:'medium',cl:[{p:0.5,r:4,n:4}]},
+      {id:'squat',load:'medium',cl:[{p:0.5,r:5,n:1},{p:0.6,r:4,n:4}]},
+      {id:'bench2',load:'heavy',cl:[{p:0.5,r:4,n:1},{p:0.6,r:3,n:3},{p:0.71,r:2,n:3}]},
+      {id:'bicep',load:'heavy',cl:[{p:0.5,r:5,n:1},{p:0.6,r:4,n:1},{p:0.7,r:4,n:4}]},
+      {id:'db',load:'medium',cl:[{p:0.5,r:6,n:4}]},
+    ]
+  },
+  { // С4
+    warmup:'Верхняя и нижняя тяги · Пресс · Гиперэкстензии',
+    exercises:[
+      {id:'bench1',load:'heavy',cl:[{p:0.55,r:4,n:1},{p:0.65,r:3,n:1},{p:0.72,r:3,n:2},{p:0.8,r:2,n:2}]},
+      {id:'squat',load:'medium',cl:[{p:0.55,r:4,n:3}]},
+      {id:'bench2',load:'medium',cl:[{p:0.5,r:5,n:1},{p:0.6,r:5,n:5}]},
+      {id:'french',load:'medium',cl:[{p:0.55,r:5,n:4}]},
+      {id:'incline',load:'medium',cl:[{p:0.5,r:5,n:4}]},
+    ]
+  },
+  { // С5
+    warmup:'Разгибание голени · Трицепс на блоке · Наружное вращение плеча · Лодочка',
+    exercises:[
+      {id:'bench1',load:'heavy',cl:[{p:0.55,r:3,n:1},{p:0.65,r:3,n:3},{p:0.72,r:2,n:3}]},
+      {id:'squat',load:'heavy',cl:[{p:0.55,r:3,n:1},{p:0.65,r:2,n:2},{p:0.75,r:1,n:2}]},
+      {id:'bench2',load:'medium',cl:[{p:0.5,r:5,n:3},{p:0.6,r:4,n:3}]},
+      {id:'bicep',load:'medium',cl:[{p:0.52,r:5,n:1},{p:0.6,r:5,n:5}]},
+      {id:'db',load:'medium',cl:[{p:0.55,r:5,n:1},{p:0.62,r:5,n:5}]},
+    ]
+  },
+  { // С6
+    warmup:'Верхняя и нижняя тяги · Пресс · Гиперэкстензии',
+    exercises:[
+      {id:'bench1',load:'heavy',cl:[{p:0.6,r:4,n:1},{p:0.67,r:3,n:1},{p:0.75,r:2,n:2},{p:0.82,r:1,n:2}]},
+      {id:'squat',load:'heavy',cl:[{p:0.5,r:3,n:1},{p:0.6,r:3,n:1},{p:0.7,r:2,n:2},{p:0.77,r:1,n:2}]},
+      {id:'bench2',load:'heavy',cl:[{p:0.63,r:3,n:1},{p:0.7,r:2,n:3},{p:0.77,r:2,n:3}]},
+      {id:'french',load:'light',cl:[{p:0.45,r:6,n:5}]},
+      {id:'incline',load:'medium',cl:[{p:0.55,r:6,n:5}]},
+    ]
+  },
+  { // С7
+    warmup:'Разгибание голени · Трицепс на блоке · Наружное вращение плеча · Лодочка',
+    exercises:[
+      {id:'bench1',load:'heavy',cl:[{p:0.5,r:4,n:1},{p:0.6,r:3,n:1},{p:0.68,r:3,n:2},{p:0.75,r:2,n:2}]},
+      {id:'squat',load:'medium',cl:[{p:0.55,r:4,n:1},{p:0.67,r:3,n:4}]},
+      {id:'bench2',load:'heavy',cl:[{p:0.55,r:4,n:1},{p:0.65,r:3,n:1},{p:0.73,r:3,n:4}]},
+      {id:'bicep',load:'heavy',cl:[{p:0.55,r:5,n:1},{p:0.65,r:4,n:1},{p:0.75,r:4,n:4}]},
+      {id:'db',load:'medium',cl:[{p:0.5,r:6,n:1},{p:0.6,r:5,n:5}]},
+    ]
+  },
+  { // С8
+    warmup:'Верхняя и нижняя тяги · Пресс · Гиперэкстензии',
+    exercises:[
+      {id:'bench1',load:'heavy',cl:[{p:0.55,r:3,n:1},{p:0.65,r:3,n:1},{p:0.72,r:2,n:2},{p:0.78,r:1,n:2},{p:0.85,r:1,n:2}]},
+      {id:'squat',load:'heavy',cl:[{p:0.55,r:3,n:1},{p:0.65,r:3,n:1},{p:0.75,r:2,n:2}]},
+      {id:'bench2',load:'medium',cl:[{p:0.55,r:4,n:1},{p:0.65,r:4,n:3}]},
+      {id:'french',load:'medium',cl:[{p:0.5,r:6,n:1},{p:0.6,r:5,n:5}]},
+      {id:'incline',load:'medium',cl:[{p:0.55,r:6,n:1},{p:0.65,r:5,n:4}]},
+    ]
+  },
+  { // С9
+    warmup:'Разгибание голени · Трицепс на блоке · Наружное вращение плеча · Лодочка',
+    exercises:[
+      {id:'bench1',load:'heavy',cl:[{p:0.55,r:4,n:1},{p:0.65,r:3,n:1},{p:0.72,r:3,n:2},{p:0.77,r:2,n:2}]},
+      {id:'squat',load:'medium',cl:[{p:0.52,r:4,n:1},{p:0.62,r:3,n:3}]},
+      {id:'bench2',load:'heavy',cl:[{p:0.6,r:4,n:1},{p:0.7,r:3,n:4}]},
+      {id:'bicep',load:'medium',cl:[{p:0.52,r:5,n:5}]},
+      {id:'db',load:'heavy',cl:[{p:0.55,r:5,n:1},{p:0.65,r:4,n:1},{p:0.72,r:4,n:4}]},
+    ]
+  },
+  { // С10
+    warmup:'Верхняя и нижняя тяги · Пресс · Гиперэкстензии',
+    exercises:[
+      {id:'bench1',load:'heavy',cl:[{p:0.6,r:3,n:1},{p:0.67,r:2,n:2},{p:0.75,r:1,n:2},{p:0.8,r:1,n:2},{p:0.83,r:1,n:2},{p:0.88,r:1,n:2}]},
+      {id:'squat',load:'heavy',cl:[{p:0.5,r:3,n:1},{p:0.6,r:3,n:1},{p:0.7,r:2,n:2},{p:0.77,r:1,n:2}]},
+      {id:'bench2',load:'heavy',cl:[{p:0.55,r:5,n:1},{p:0.65,r:4,n:1},{p:0.75,r:4,n:4}]},
+      {id:'french',load:'medium',cl:[{p:0.5,r:5,n:5}]},
+      {id:'incline',load:'medium',cl:[{p:0.55,r:5,n:1},{p:0.65,r:4,n:4}]},
+    ]
+  },
+  { // С11
+    warmup:'Разгибание голени · Трицепс на блоке · Наружное вращение плеча · Лодочка',
+    exercises:[
+      {id:'bench1',load:'heavy',cl:[{p:0.5,r:4,n:1},{p:0.6,r:3,n:3},{p:0.7,r:2,n:3}]},
+      {id:'squat',load:'medium',cl:[{p:0.55,r:3,n:1},{p:0.65,r:3,n:3}]},
+      {id:'bench2',load:'medium',cl:[{p:0.55,r:4,n:1},{p:0.65,r:3,n:4}]},
+      {id:'bicep',load:'medium',cl:[{p:0.55,r:5,n:5}]},
+      {id:'db',load:'medium',cl:[{p:0.55,r:6,n:5}]},
+    ]
+  },
+  { // С12
+    warmup:'Верхняя и нижняя тяги · Пресс · Гиперэкстензии',
+    exercises:[
+      {id:'bench1',load:'heavy',cl:[{p:0.58,r:4,n:1},{p:0.65,r:4,n:1},{p:0.75,r:3,n:3},{p:0.81,r:2,n:3}]},
+      {id:'squat',load:'heavy',cl:[{p:0.55,r:3,n:1},{p:0.65,r:3,n:2},{p:0.75,r:2,n:2}]},
+      {id:'bench2',load:'heavy',cl:[{p:0.55,r:4,n:1},{p:0.62,r:3,n:1},{p:0.7,r:2,n:2},{p:0.77,r:1,n:2}]},
+      {id:'french',load:'medium',cl:[{p:0.57,r:5,n:5}]},
+      {id:'incline',load:'medium',cl:[{p:0.54,r:6,n:1},{p:0.63,r:5,n:5}]},
+    ]
+  },
+  { // С13
+    warmup:'Разгибание голени · Трицепс на блоке · Наружное вращение плеча · Лодочка',
+    exercises:[
+      {id:'bench1',load:'heavy',cl:[{p:0.55,r:3,n:1},{p:0.65,r:2,n:3},{p:0.75,r:1,n:3}]},
+      {id:'squat',load:'heavy',cl:[{p:0.57,r:3,n:1},{p:0.65,r:2,n:3},{p:0.75,r:1,n:3}]},
+      {id:'bench2',load:'medium',cl:[{p:0.5,r:5,n:1},{p:0.6,r:4,n:4}]},
+      {id:'bicep',load:'medium',cl:[{p:0.5,r:5,n:1},{p:0.6,r:5,n:5}]},
+      {id:'db',load:'medium',cl:[{p:0.5,r:6,n:1},{p:0.6,r:6,n:5}]},
+    ]
+  },
+  { // С14
+    warmup:'Верхняя и нижняя тяги · Пресс · Гиперэкстензии',
+    exercises:[
+      {id:'bench1',load:'heavy',cl:[{p:0.5,r:4,n:1},{p:0.57,r:3,n:1},{p:0.65,r:2,n:2},{p:0.72,r:1,n:2},{p:0.77,r:1,n:2}]},
+      {id:'squat',load:'medium',cl:[{p:0.5,r:4,n:1},{p:0.6,r:3,n:3}]},
+      {id:'bench2',load:'heavy',cl:[{p:0.55,r:4,n:1},{p:0.65,r:3,n:3},{p:0.72,r:2,n:3}]},
+      {id:'french',load:'medium',cl:[{p:0.55,r:6,n:1},{p:0.6,r:5,n:5}]},
+      {id:'incline',load:'medium',cl:[{p:0.55,r:6,n:1},{p:0.6,r:5,n:5}]},
+    ]
+  },
+  { // С15
+    warmup:'Разгибание голени · Трицепс на блоке · Наружное вращение плеча · Лодочка',
+    exercises:[
+      {id:'bench1',load:'heavy',cl:[{p:0.51,r:4,n:1},{p:0.6,r:3,n:3},{p:0.7,r:2,n:3}]},
+      {id:'squat',load:'heavy',cl:[{p:0.56,r:3,n:1},{p:0.62,r:2,n:2},{p:0.72,r:1,n:2}]},
+      {id:'bench2',load:'medium',cl:[{p:0.55,r:5,n:1},{p:0.62,r:4,n:4}]},
+      {id:'bicep',load:'medium',cl:[{p:0.55,r:5,n:1},{p:0.65,r:4,n:4}]},
+      {id:'db',load:'medium',cl:[{p:0.55,r:6,n:1},{p:0.65,r:6,n:5}]},
+    ]
+  },
+  { // С16
+    warmup:'Верхняя и нижняя тяги · Пресс · Гиперэкстензии',
+    exercises:[
+      {id:'bench1',load:'heavy',cl:[{p:0.55,r:4,n:1},{p:0.6,r:3,n:1},{p:0.69,r:2,n:2},{p:0.76,r:1,n:2},{p:0.8,r:1,n:2}]},
+      {id:'squat',load:'medium',cl:[{p:0.55,r:4,n:1},{p:0.65,r:3,n:3}]},
+      {id:'bench2',load:'heavy',cl:[{p:0.6,r:4,n:1},{p:0.67,r:3,n:3},{p:0.75,r:1,n:3}]},
+      {id:'french',load:'medium',cl:[{p:0.55,r:6,n:1},{p:0.65,r:5,n:5}]},
+      {id:'incline',load:'heavy',cl:[{p:0.55,r:6,n:1},{p:0.62,r:5,n:1},{p:0.7,r:4,n:4}]},
+    ]
+  },
+  { // С17
+    warmup:'Разгибание голени · Трицепс на блоке · Наружное вращение плеча · Лодочка',
+    exercises:[
+      {id:'bench1',load:'heavy',cl:[{p:0.55,r:3,n:1},{p:0.65,r:3,n:2},{p:0.7,r:2,n:2},{p:0.75,r:1,n:2}]},
+      {id:'squat',load:'heavy',cl:[{p:0.5,r:4,n:1},{p:0.6,r:3,n:1},{p:0.7,r:2,n:2},{p:0.75,r:1,n:2}]},
+      {id:'bench2',load:'heavy',cl:[{p:0.53,r:5,n:1},{p:0.62,r:4,n:1},{p:0.7,r:3,n:3}]},
+      {id:'bicep',load:'heavy',cl:[{p:0.55,r:5,n:1},{p:0.65,r:4,n:1},{p:0.7,r:4,n:4}]},
+      {id:'db',load:'heavy',cl:[{p:0.52,r:6,n:1},{p:0.62,r:5,n:1},{p:0.7,r:5,n:4}]},
+    ]
+  },
+  { // С18
+    warmup:'Верхняя и нижняя тяги · Пресс · Гиперэкстензии',
+    exercises:[
+      {id:'bench1',load:'heavy',cl:[{p:0.5,r:4,n:1},{p:0.6,r:3,n:1},{p:0.7,r:3,n:4}]},
+      {id:'squat',load:'heavy',cl:[{p:0.5,r:4,n:1},{p:0.6,r:3,n:1},{p:0.67,r:2,n:2},{p:0.75,r:1,n:2},{p:0.82,r:1,n:2},{p:0.85,r:1,n:2}]},
+      {id:'bench2',load:'heavy',cl:[{p:0.55,r:4,n:1},{p:0.65,r:4,n:1},{p:0.72,r:2,n:2},{p:0.8,r:1,n:2}]},
+      {id:'french',load:'heavy',cl:[{p:0.53,r:4,n:1},{p:0.63,r:4,n:1},{p:0.7,r:4,n:4}]},
+      {id:'incline',load:'heavy',cl:[{p:0.55,r:4,n:1},{p:0.65,r:4,n:1},{p:0.75,r:4,n:4}]},
+    ]
+  },
+  { // С19
+    warmup:'Разгибание голени · Трицепс на блоке · Наружное вращение плеча · Лодочка',
+    exercises:[
+      {id:'bench1',load:'heavy',cl:[{p:0.52,r:4,n:1},{p:0.6,r:3,n:1},{p:0.68,r:3,n:1},{p:0.76,r:2,n:2},{p:0.82,r:2,n:2}]},
+      {id:'squat',load:'heavy',cl:[{p:0.55,r:4,n:1},{p:0.65,r:3,n:1},{p:0.75,r:2,n:2},{p:0.8,r:1,n:2}]},
+      {id:'bench2',load:'medium',cl:[{p:0.55,r:4,n:1},{p:0.65,r:4,n:5}]},
+      {id:'bicep',load:'heavy',cl:[{p:0.57,r:5,n:1},{p:0.67,r:4,n:1},{p:0.75,r:4,n:4}]},
+      {id:'db',load:'medium',cl:[{p:0.53,r:6,n:4}]},
+    ]
+  },
+  { // С20
+    warmup:'Верхняя и нижняя тяги · Пресс · Гиперэкстензии',
+    exercises:[
+      {id:'bench1',load:'heavy',cl:[{p:0.55,r:4,n:1},{p:0.65,r:3,n:1},{p:0.75,r:3,n:2},{p:0.8,r:1,n:2}]},
+      {id:'squat',load:'heavy',cl:[{p:0.55,r:4,n:1},{p:0.65,r:3,n:1},{p:0.72,r:2,n:2},{p:0.8,r:1,n:2}]},
+      {id:'bench2',load:'medium',cl:[{p:0.52,r:5,n:1},{p:0.63,r:4,n:4}]},
+      {id:'french',load:'medium',cl:[{p:0.55,r:5,n:5}]},
+      {id:'incline',load:'medium',cl:[{p:0.5,r:6,n:5}]},
+    ]
+  },
+  { // С21
+    warmup:'Разгибание голени · Трицепс на блоке · Наружное вращение плеча · Лодочка',
+    exercises:[
+      {id:'bench1',load:'heavy',cl:[{p:0.55,r:4,n:1},{p:0.65,r:3,n:1},{p:0.72,r:2,n:2},{p:0.8,r:1,n:2}]},
+      {id:'squat',load:'medium',cl:[{p:0.5,r:4,n:4}]},
+      {id:'bench2',load:'medium',cl:[{p:0.55,r:4,n:1},{p:0.65,r:4,n:4}]},
+      {id:'bicep',load:'medium',cl:[{p:0.5,r:6,n:5}]},
+      {id:'db',load:'medium',cl:[{p:0.55,r:5,n:1},{p:0.65,r:5,n:5}]},
+    ]
+  },
+  { // С22
+    warmup:'Верхняя и нижняя тяги · Пресс · Гиперэкстензии',
+    exercises:[
+      {id:'bench1',load:'heavy',cl:[{p:0.5,r:4,n:1},{p:0.6,r:4,n:1},{p:0.7,r:3,n:3},{p:0.77,r:1,n:3}]},
+      {id:'squat',load:'heavy',cl:[{p:0.55,r:3,n:1},{p:0.65,r:2,n:2},{p:0.72,r:1,n:2}]},
+      {id:'bench2',load:'heavy',cl:[{p:0.55,r:4,n:1},{p:0.65,r:4,n:3},{p:0.72,r:3,n:3}]},
+      {id:'french',load:'medium',cl:[{p:0.5,r:6,n:5}]},
+      {id:'incline',load:'heavy',cl:[{p:0.55,r:5,n:1},{p:0.65,r:5,n:3},{p:0.7,r:4,n:3}]},
+    ]
+  },
+  { // С23
+    warmup:'Разгибание голени · Трицепс на блоке · Наружное вращение плеча · Лодочка',
+    exercises:[
+      {id:'bench1',load:'heavy',cl:[{p:0.5,r:4,n:1},{p:0.6,r:3,n:1},{p:0.67,r:2,n:2},{p:0.74,r:1,n:2},{p:0.82,r:1,n:2}]},
+      {id:'squat',load:'medium',cl:[{p:0.55,r:4,n:1},{p:0.65,r:3,n:3}]},
+      {id:'bench2',load:'heavy',cl:[{p:0.55,r:4,n:1},{p:0.65,r:3,n:1},{p:0.72,r:2,n:2},{p:0.8,r:1,n:2},{p:0.85,r:1,n:2},{p:0.9,r:1,n:2}]},
+      {id:'bicep',load:'medium',cl:[{p:0.55,r:5,n:5}]},
+      {id:'db',load:'heavy',cl:[{p:0.5,r:6,n:1},{p:0.6,r:5,n:1},{p:0.7,r:4,n:4}]},
+    ]
+  },
+  { // С24
+    warmup:'Верхняя и нижняя тяги · Пресс · Гиперэкстензии',
+    exercises:[
+      {id:'bench1',load:'heavy',cl:[{p:0.55,r:4,n:1},{p:0.65,r:4,n:1},{p:0.75,r:3,n:3},{p:0.8,r:1,n:3}]},
+      {id:'squat',load:'heavy',cl:[{p:0.58,r:3,n:1},{p:0.67,r:2,n:2},{p:0.75,r:1,n:2}]},
+      {id:'bench2',load:'heavy',cl:[{p:0.52,r:4,n:1},{p:0.6,r:3,n:1},{p:0.68,r:3,n:2},{p:0.75,r:2,n:2}]},
+      {id:'french',load:'medium',cl:[{p:0.55,r:5,n:1},{p:0.65,r:4,n:4}]},
+      {id:'incline',load:'heavy',cl:[{p:0.58,r:5,n:1},{p:0.67,r:4,n:1},{p:0.75,r:3,n:3}]},
+    ]
+  },
+];
+
+const LNAME  = {heavy:'Тяжёлая', medium:'Средняя', light:'Лёгкая'};
+const LEMOJI = {heavy:'🔴', medium:'🟡', light:'🟢'};
+const LCOLOR = {heavy:'var(--heavy)', medium:'var(--medium)', light:'var(--light)'};
+
+const DAY_NAMES   = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
+const MONTH_SHORT = ['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
+
+// ── ПМ-ФОРМУЛЫ ───────────────────────────────────────────
+// Рост ПМ: ПМ_нов = ПМ_баз × (1 + корр/100)^неделя
+// 0.5% в неделю — рекомендация из файла для натуральных
+function growPM(base, weeks, corr) { return base * Math.pow(1 + corr/100, weeks); }
+
+function getExPM(exId, bench, squat) {
+  const e = EX[exId];
+  if (!e) return 0;
+  const base = e.pmOf === 'squat' ? squat : bench;
+  return base * e.ratio;
+}
+
+function roundW(w, step) { step = step || 2.5; return Math.round(w / step) * step; }
+
+// ── МЕТРИКИ LMS (из файла) ────────────────────────────────
+// Тоннаж = Σ(вес × повт × подходы)
+// КПШ    = Σ(повт × подходы)
+// Ср.вес = Тоннаж / КПШ
+// ОИ     = Ср.вес / ПМ
+function exMetrics(clusters, pm) {
+  let T=0, K=0;
+  clusters.forEach(c=>{T+=c.weight*c.reps*c.doneSets; K+=c.reps*c.doneSets;});
+  const avg=K>0?T/K:0;
+  return{tonnage:T, kpsh:K, avg, oi:pm>0&&K>0?avg/pm:0};
+}
+function totalMetrics(exercises) {
+  let T=0,K=0;
+  exercises.forEach(ex=>{const m=exMetrics(ex.clusters,ex.pm);T+=m.tonnage;K+=m.kpsh;});
+  return{tonnage:T, kpsh:K, avg:K>0?T/K:0};
+}
+
+// ── ПОСТРОЕНИЕ ТРЕНИРОВКИ ────────────────────────────────
+function buildSession(sessionN, bench, squat) {
+  const sess = SESSIONS[sessionN % 24];
+  return {
+    ...sess,
+    exercises: sess.exercises.map(exDef => {
+      const pm = getExPM(exDef.id, bench, squat);
+      return {
+        id: exDef.id,
+        load: exDef.load,
+        pm,
+        clusters: exDef.cl.map(c => ({
+          p: c.p,
+          weight: roundW(pm * c.p, EX[exDef.id] && EX[exDef.id].step),
+          reps: c.r,
+          numSets: c.n,
+          doneSets: 0,
+        })),
+      };
+    }),
+  };
+}
+
+// ── ДАТЫ ─────────────────────────────────────────────────
+function sessionDate(n) {
+  const days = (S.trainingDays||[]).slice().sort((a,b)=>a-b);
+  if(!S.startDate||!days.length) return null;
+  let d=new Date(S.startDate); d.setHours(0,0,0,0);
+  let cnt=-1;
+  if(days.includes(d.getDay())){cnt=0;if(cnt===n)return new Date(d);}
+  for(let i=0;i<3650;i++){
+    d=new Date(d.getTime()+86400000);
+    if(days.includes(d.getDay())){cnt++;if(cnt===n)return new Date(d);}
+  }
+  return null;
+}
+function todayStr(){return new Date().toISOString().slice(0,10);}
+function todayDate(){const d=new Date();d.setHours(0,0,0,0);return d;}
+function fmtDate(d){if(!d)return'—';const dd=d instanceof Date?d:new Date(d);return`${DAY_NAMES[dd.getDay()]} ${dd.getDate()} ${MONTH_SHORT[dd.getMonth()]}`;}
+function fmtFull(d){if(!d)return'—';const dd=d instanceof Date?d:new Date(d);return`${DAY_NAMES[dd.getDay()]}, ${dd.getDate()} ${MONTH_SHORT[dd.getMonth()]} ${dd.getFullYear()}`;}
+function timeStr(s){return Math.floor(s/60)+':'+(s%60+'').padStart(2,'0');}
+function pctStr(v){return(v*100).toFixed(0)+'%';}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function shiftSchedule(actualStr) {
+  const planned = sessionDate(S.sessionCount-1);
+  if(!planned) return;
+  const actual = new Date(actualStr); actual.setHours(0,0,0,0);
+  const diff = Math.round((actual-planned)/86400000);
+  if(!diff) return;
+  const ns = new Date(S.startDate); ns.setDate(ns.getDate()+diff);
+  S.startDate = ns.toISOString().slice(0,10);
+  saveSave();
+}
+
+// ── ХРАНИЛИЩЕ ─────────────────────────────────────────────
+const KEY='lms_v5';
+function loadSave(){
+  try{
+    // Пробуем текущий ключ
+    let r=localStorage.getItem(KEY);
+    if(r) return JSON.parse(r);
+    // Мигрируем из старых версий
+    for(const k of ['lms_v4','lms_v3','lms_v2','lms_v1','lms_gym_v1']){
+      const old=localStorage.getItem(k);
+      if(old){ const d=JSON.parse(old); localStorage.setItem(KEY,old); return d; }
+    }
+    return null;
+  }catch{return null;}
+}
+function saveSave(){try{localStorage.setItem(KEY,JSON.stringify({
+  benchPM:S.benchPM,squatPM:S.squatPM,corrPct:S.corrPct,
+  startDate:S.startDate,trainingDays:S.trainingDays,
+  sessionCount:S.sessionCount,history:S.history
+}));}catch(e){}}
+function exportData(){
+  const blob=new Blob([JSON.stringify({benchPM:S.benchPM,squatPM:S.squatPM,corrPct:S.corrPct,startDate:S.startDate,trainingDays:S.trainingDays,sessionCount:S.sessionCount,history:S.history},null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='lms_'+todayStr()+'.json';a.click();
+}
+function importData(){
+  const inp=document.createElement('input');inp.type='file';inp.accept='.json';
+  inp.onchange=ev=>{const r=new FileReader();r.onload=e=>{try{
+    const d=JSON.parse(e.target.result);
+    if(d.benchPM)S.benchPM=d.benchPM;if(d.squatPM)S.squatPM=d.squatPM;
+    if(d.corrPct!==undefined)S.corrPct=d.corrPct;if(d.startDate)S.startDate=d.startDate;
+    if(d.trainingDays)S.trainingDays=d.trainingDays;
+    if(d.sessionCount!==undefined)S.sessionCount=d.sessionCount;
+    if(d.history)S.history=d.history;
+    saveSave();
+
+// Портальный фон и силуэт Рика
+setTimeout(function(){
+  const p=document.createElement('div');
+  p.className='portal-bg-decor';
+  document.body.appendChild(p);
+
+  // Силуэт Рика в правом нижнем углу
+  const rs=document.createElement('div');
+  rs.className='rick-silhouette';
+  rs.innerHTML='<svg viewBox="0 0 90 190" width="90" height="190" fill="var(--portal)">'+
+    '<ellipse cx="45" cy="28" rx="19" ry="22"/>'+
+    '<polygon points="28,16 22,4 33,13"/>'+
+    '<polygon points="37,11 34,1 43,9"/>'+
+    '<polygon points="52,11 55,1 63,11"/>'+
+    '<rect x="28" y="50" width="34" height="68" rx="6"/>'+
+    '<rect x="14" y="53" width="11" height="52" rx="5" transform="rotate(-8,14,53)"/>'+
+    '<rect x="65" y="53" width="11" height="52" rx="5" transform="rotate(8,76,53)"/>'+
+    '<rect x="30" y="116" width="13" height="58" rx="5"/>'+
+    '<rect x="47" y="116" width="13" height="58" rx="5"/>'+
+    '<ellipse cx="13" cy="98" rx="6" ry="11" fill="var(--rick)"/>'+
+    '<circle cx="13" cy="90" r="4" fill="var(--portal)"/>'+
+    '</svg>';
+  document.body.appendChild(rs);
+}, 200);
+
+// Звёзды и портал — после загрузки UI (requestIdleCallback или setTimeout)
+setTimeout(function(){
+  const bg = document.createElement('div');
+  bg.style.cssText='position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden';
+  // 40 звёзд вместо 90 — достаточно для атмосферы
+  const stars = Array.from({length:40},()=>{
+    const x=(Math.random()*100).toFixed(1);
+    const y=(Math.random()*100).toFixed(1);
+    const s=Math.random()>.7?2:1;
+    const o=(0.15+Math.random()*.4).toFixed(2);
+    const d=(3+Math.random()*4).toFixed(1);
+    const delay=(Math.random()*5).toFixed(1);
+    return '<div style="position:absolute;left:'+x+'%;top:'+y+'%;width:'+s+'px;height:'+s+'px;border-radius:50%;background:white;opacity:'+o+';animation:twinkle '+d+'s ease-in-out '+delay+'s infinite"></div>';
+  }).join('');
+  bg.innerHTML=stars;
+  document.body.appendChild(bg);
+}, 300);
+render();alert('✅ Загружено!');
+  }catch{alert('❌ Ошибка');}};r.readAsText(ev.target.files[0]);};inp.click();
+}
+
+const saved=loadSave();
+const S={
+  benchPM:saved?.benchPM||0, squatPM:saved?.squatPM||0,
+  corrPct:saved?.corrPct||0.5, startDate:saved?.startDate||todayStr(),
+  trainingDays:saved?.trainingDays||[1,4],
+  sessionCount:saved?.sessionCount||0, history:saved?.history||[],
+  screen:saved?.benchPM?'home':'setup', workout:null, summary:null,
+};
+
+let TI=null;
+function startTimer(){clearInterval(TI);TI=setInterval(()=>{const el=document.getElementById('tmr');if(el&&S.workout)el.textContent='⏱ '+timeStr(Math.floor((Date.now()-S.workout.startTime)/1000));},1000);}
+function stopTimer(){clearInterval(TI);TI=null;}
+
+// ── ДЕЙСТВИЯ ──────────────────────────────────────────────
+function saveSetup(){
+  const bench=parseFloat(document.getElementById('si_bench').value);
+  const squat=parseFloat(document.getElementById('si_squat').value);
+  const corr =parseFloat(document.getElementById('si_corr').value);
+  const date =document.getElementById('si_date').value;
+  if(!bench||bench<=0||!squat||squat<=0){alert('Введи ПМ жима и приседа!');return;}
+  S.benchPM=bench;S.squatPM=squat;S.corrPct=corr>0?corr:0.5;S.startDate=date||todayStr();S._draft=null;
+  saveSave();S.screen='home';render();
+}
+function saveDraft(){
+  // Сохраняем незакоммиченные значения формы перед ре-рендером
+  const b=document.getElementById('si_bench');
+  const s=document.getElementById('si_squat');
+  const co=document.getElementById('si_corr');
+  const dt=document.getElementById('si_date');
+  if(b) S._draft={
+    bench: b.value,
+    squat: s ? s.value : '',
+    corr:  co ? co.value : '',
+    date:  dt ? dt.value : ''
+  };
+}
+function toggleDay(d){
+  saveDraft(); // сохраняем форму до ре-рендера
+  const i=S.trainingDays.indexOf(d);
+  if(i>=0){
+    if(S.trainingDays.length>1) S.trainingDays.splice(i,1);
+  } else {
+    if(S.trainingDays.length>=2){
+      alert('Программа рассчитана на 2 тренировки в неделю. Сначала убери один из выбранных дней.');
+      return;
+    }
+    S.trainingDays.push(d);
+  }
+  saveSave();render();
+}
+function startWorkout(){
+  if(!S.benchPM||!S.squatPM){S.screen='setup';render();return;}
+  const n=S.sessionCount;
+  const week=Math.floor(n/2);
+  const bench=growPM(S.benchPM,week,S.corrPct);
+  const squat=growPM(S.squatPM,week,S.corrPct);
+  const sess=buildSession(n,bench,squat);
+  const plannedDate=sessionDate(n);
+  S.workout={
+    sessionN:n, startTime:Date.now(),
+    plannedDate:plannedDate?plannedDate.toISOString().slice(0,10):todayStr(),
+    actualDate:todayStr(), expEx:0,
+    warmup:sess.warmup,
+    exercises:sess.exercises,
+  };
+  S.screen='workout';render();startTimer();
+}
+function cancelWorkout(){stopTimer();S.workout=null;S.screen='home';render();}
+function toggleEx(i){if(!S.workout)return;S.workout.expEx=S.workout.expEx===i?null:i;render();}
+function markSet(ei,ci,add){
+  if(!S.workout)return;
+  const c=S.workout.exercises[ei].clusters[ci];
+  if(add&&c.doneSets<c.numSets)c.doneSets++;
+  if(!add&&c.doneSets>0)c.doneSets--;
+  const ex=S.workout.exercises[ei];
+  if(ex.clusters.every(cl=>cl.doneSets===cl.numSets)){
+    showMeeseeksToast();
+    if(ei<S.workout.exercises.length-1)
+      setTimeout(()=>{if(S.workout){S.workout.expEx=ei+1;render();}},380);
+  }
+  render();
+}
+function finishWorkout(){
+  stopTimer();
+  const elapsed=Math.floor((Date.now()-S.workout.startTime)/1000);
+  const total=totalMetrics(S.workout.exercises);
+  const dateMatch=S.workout.actualDate===S.workout.plannedDate;
+  const rec={
+    id:Date.now(),date:S.workout.actualDate,plannedDate:S.workout.plannedDate,
+    sessionN:S.workout.sessionN,duration:Math.floor(elapsed/60),
+    week:Math.floor(S.workout.sessionN/2),total,
+    exercises:S.workout.exercises.map(ex=>{
+      return{id:ex.id,pm:ex.pm,load:ex.load,...exMetrics(ex.clusters,ex.pm)};
+    }),
+  };
+  S.summary={rec,needsCorrection:!dateMatch};
+  S.sessionCount++;S.history=[rec,...S.history].slice(0,300);
+  S.workout=null;saveSave();render();
+}
+function doCorrect(){shiftSchedule(S.summary.rec.date);S.summary.needsCorrection=false;S.summary.corrected=true;render();}
+function skipCorrect(){S.summary.needsCorrection=false;render();}
+function closeSummary(){S.summary=null;S.screen='home';render();}
+function navTo(s){S.screen=s;render();}
+function toggleHist(i){const el=document.getElementById('hb'+i);if(el)el.style.display=el.style.display==='none'?'block':'none';}
+
+// ════════════════════════════════════════════════════════
+// ЭКРАНЫ
+// ════════════════════════════════════════════════════════
+
+
+// ── Размерения C-137 — для каждой из 24 сессий ───────────
+const DIMENSIONS = [
+  'C-137','J-19Ζ-7','C-500A','Cronenberg',
+  'Evil Rick','Squanch','Council of Ricks','Citadel',
+  'Unity','Tiny Rick','PICKLE RICK','Bird Person',
+  'Purge Planet','Gazorpazorp','Szechuan Sauce','Evil Morty',
+  'I-Cable TV','Mr. Meeseeks','Poopybutthole','Doofus Rick',
+  'Quantum Vortex','J-22','Pocket Mortys','C-132',
+];
+function dimension(n){ return DIMENSIONS[n%24]; }
+
+// ── Лор упражнений ────────────────────────────────────────
+const EX_LORE = {
+  bench1:  '[S03E03] База C-137. Огурчик-Рик жал лёжа до превращения.',
+  bench2:  '[S01E05] Объёмный жим — как Мисекс: много подходов, одна цель.',
+  squat:   '[S01E06] S01E06: Морти использовал присед при побеге с Gazorpazorp.',
+  bicep:   '[S01E02] Tiny Rick кричал «LET ME OUT» но бицепс рос.',
+  db:      '[S02E03] Bird Person тренировал грудь перед каждой битвой.',
+  french:  '[S02E06] Французский жим — изобретение измерения J-19Ζ-7.',
+  incline: '[S03E01] Citadel of Ricks. Обязательное упражнение для всех Риков.',
+};
+function exLore(id){ return EX_LORE[id] || ''; }
+
+// ── Реакции на завершение упражнения ──────────────────────
+const EX_DONE_Q = [
+  '«Can do!» — Mr. Meeseeks 🙋',
+  '«I\'m Mr. Meeseeks, LOOK AT ME!» 👀',
+  'Council of Ricks поставил печать! 🏛️',
+  '«Aw geez, Rick, я это сделал...» — Морти',
+  '«TINY RICK! TINY RICK!» 🕺',
+  '«Wubba lubba dub dub!» — значит это больно. Значит работает. 🥒',
+  'Получено очко в Pocket Mortys ⚡',
+  '«That\'s... that\'s really something.» — Bird Person 🦅',
+  '«Squanchy!» — Squanchy, наверное. 💪',
+  '«Existence is pain» — но ты справился.',
+];
+let exDoneIdx = 0;
+function nextDoneQ(){ return EX_DONE_Q[exDoneIdx++ % EX_DONE_Q.length]; }
+
+// ── Счётчик тапов по порталу (пасхалка) ──────────────────
+let portalTaps = 0, portalTimer = null;
+function showExDonePopup(msg){
+  const old = document.querySelector('.ex-popup');
+  if(old) old.remove();
+  const el = document.createElement('div');
+  const isMorty = msg.startsWith('Морти:');
+  el.className = 'ex-popup';
+  el.style.cssText = isMorty
+    ? 'border-color:rgba(245,197,24,.5);color:var(--morty);box-shadow:0 4px 24px rgba(245,197,24,.2)'
+    : 'border-color:rgba(57,255,20,.5);color:var(--portal);box-shadow:0 4px 24px rgba(57,255,20,.2)';
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(()=>{ el.style.animation='popup-out .3s ease forwards'; setTimeout(()=>el.remove(),300); }, 2400);
+}
+
+function onPortalTap(){
+  portalTaps++;
+  clearTimeout(portalTimer);
+  portalTimer = setTimeout(()=>{ portalTaps=0; }, 2000);
+  if(portalTaps >= 5){
+    portalTaps = 0;
+    const secrets = [
+      '🤫 [S1E1] «Wubba lubba dub dub» = «мне очень больно, пожалуйста помогите» на языке Birdperson',
+      '🤫 [S1E9] Рик плакал под кроватью у Морти. Единственный раз в сериале.',
+      '🤫 [S4E6] Bird Person переведён как Бёрд Персон. Его настоящее имя — Attila.',
+      '🤫 [S3E7] Evil Morty — единственный Морти который НЕ боится Рика.',
+      '🤫 [S3E1] McDonald\'s реально вернули Szechuan соус в 2017 после S3E1.',
+      '🤫 [S2E10] Tiny Rick написал эмо-песню которую никто не услышал.',
+      '🤫 [S4E8] Mr. Poopybutthole появился в S1E4. Все решили что он враг. Он не враг.',
+    ];
+    alert(secrets[Math.floor(Math.random()*secrets.length)]);
+  }
+}
+
+// ── Является ли сессия Pickle Rick Mode (все Тяжёлые) ─────
+function isEvilMorty(n){ return (n%24) === 23; }
+function isPickleMode(n){
+  const sess = SESSIONS[n%24];
+  return sess.exercises.filter(e=>e.load==='heavy').length >= 4;
+}
+
+// ── Цитаты Рика (меняются каждый день) ───────────────────
+// ── Цитаты Морти (реакции) ──────────────────────────────
+const MORTY_Q = [
+  'Aw geez Rick... я реально это сделал...',
+  'О Боже, мои руки дрожат. Но я это сделал!',
+  'Это было ужасно, Rick. Ужасно... и прекрасно.',
+  'Я... я думал что умру. Но не умер!',
+  'Rick! Смотри! Я сделал все подходы!',
+];
+let mortyTurn = false;
+function nextDoneQ(){
+  if(mortyTurn){ mortyTurn=false; return 'Морти: '+MORTY_Q[exDoneIdx%MORTY_Q.length]; }
+  mortyTurn=true; return EX_DONE_Q[exDoneIdx++%EX_DONE_Q.length];
+}
+
+const RICK_Q = [
+  '[S01E09] «Какова твоя цель, Морти? Ты передаёшь масло. КПШ — вот что настоящее.»',
+  '[S03E03] «Я превратил себя в огурчик! Огурчик-Рик! А ты просто пришёл на тренировку. Уважаю.»',
+  '[S01E05] «Мисексы не рождаются без цели. Их цель — служить! Твоя цель — жим лёжа.»',
+  '[S02E04] «Наука — это иногда искусство, Морти. Тоннаж 2000 кг — это искусство.»',
+  '[S01E01] «Никто не принадлежит нигде. Все умрут. Но сначала — приседания.»',
+  '[S01E09] «Что такое боль мышц? Химическая реакция. Слабые называют это усталостью.»',
+  '[S02E10] «Peace among worlds, Морти. Но не peace между тобой и штангой.»',
+  '[S03E07] «Szechuan соус был целью целого сезона. Твоя цель — новый ПМ.»',
+  '[S01E05] «Существование — боль для Мисекса. Но он ВЫПОЛНЯЕТ ЗАДАНИЕ. А ты?»',
+  '[S04E05] «Ты хочешь быть нормальным, Морти? Нормальные люди не приседают 75%.»',
+];
+function rickQ() { return RICK_Q[Math.floor(Date.now()/86400000) % RICK_Q.length]; }
+
+// Реплика для типа нагрузки
+function loadQuip(l) {
+  if(l==='heavy') return 'Огурчик-Рик одобряет 🥒';
+  if(l==='medium') return 'Портальный режим 🌀';
+  return 'Режим Джерри 😬';
+}
+// Реплика после завершения подхода
+function setQuip(done, total) {
+  if(done===total) return '🥒 Огурчик-Рик доволен!';
+  if(done===0) return 'Давай, Морти!';
+  return `${done}/${total} — не останавливайся!`;
+}
+
+
+
+// ── Тост Мисекса при завершении упражнения ─────────────
+const MEESEEKS_Q = [
+  "I'm Mr. Meeseeks! Look at me! ✅",
+  "CAN DO! Мисекс выполнил задание! 🎉",
+  "Существование — боль... но подход сделан! 💪",
+  "[Мисекс растворился в воздухе довольным]",
+  "МИСЕКС ЗАВЕРШИЛ МИССИЮ! Wubba lubba! 🥒",
+  "Council of Ricks одобряет! 🏛️",
+];
+let _mq = 0;
+function showMeeseeksToast() {
+  const msg = MEESEEKS_Q[_mq++ % MEESEEKS_Q.length];
+  const t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:#0e0b24;border:1px solid rgba(57,255,20,.4);border-radius:100px;padding:8px 18px;font-size:.7rem;color:#39ff14;z-index:500;white-space:nowrap;box-shadow:0 0 20px rgba(57,255,20,.2);font-family:Exo 2,sans-serif;font-weight:700;transition:opacity .4s';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => { t.style.opacity='0'; setTimeout(() => t.remove(), 400); }, 2000);
+}
+
+// ── Хелперы для безопасных шаблонов (без вложенных бэктиков) ──
+function H(cond, html, els){ return cond ? html : (els||''); }
+
+// ── УТИЛИТЫ ────────────────────────────────────────
+function timeStr(s){return Math.floor(s/60)+':'+(s%60+'').padStart(2,'0');}
+function pctStr(v){return(v*100).toFixed(0)+'%';}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function loadClass(l){return l==='heavy'?'pickle':l==='medium'?'portal':'jerry';}
+function loadLabel(l){return l==='heavy'?'ОГУРЧИК-РИК':l==='medium'?'ПОРТАЛЬНЫЙ':'РЕЖИМ ДЖЕРРИ';}
+function loadEmoji(l){return l==='heavy'?'🥒':l==='medium'?'🌀':'😬';}
+function loadColor(l){return l==='heavy'?'var(--heavy-c)':l==='medium'?'var(--med-c)':'var(--lite-c)';}
+
+// ── НАСТРОЙКА ──────────────────────────────────────
+function setupHTML(){
+  const isEdit = S.benchPM > 0;
+  let header = '';
+  if (isEdit) {
+    header = `<div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
+      <button onclick="navTo('home')" class="btn-ghost" style="padding:10px 14px;font-size:.8rem">← Назад</button>
+      <div class="d3">Параметры цикла</div>
+    </div>`;
+  } else {
+    header = `<div style="text-align:center;margin-bottom:32px">
+      <div class="portal-ring" style="width:72px;height:72px;margin:0 auto 20px">
+        <div class="portal-inner" style="width:58px;height:58px;font-size:1.6rem">⚗️</div>
+      </div>
+      <div class="d2" style="color:var(--portal);margin-bottom:6px">LMS Gym</div>
+      <div style="font-size:.7rem;color:var(--t3)">Система периодизации · cycle15 · C-137</div>
+    </div>`;
+  }
+
+  return `<div class="screen fade-up">
+    ${header}
+    <div style="background:var(--m08);border:1px solid var(--m20);border-radius:var(--r12);padding:12px 16px;margin-bottom:20px;font-size:.72rem;color:var(--morty);line-height:1.6">
+      ⚗️ <b>Слушай меня, Морти.</b> Только два числа имеют значение во всей этой вселенной — твой <b>ПМ жима и ПМ приседа</b>. Всё остальное рассчитает наука.
+    </div>
+
+    <div class="card" style="margin-bottom:12px">
+      <div class="section-hdr">
+        <div class="label" style="color:var(--portal)">🏋️ Предельные максимумы</div>
+      </div>
+      <div style="padding:16px;display:flex;flex-direction:column;gap:14px">
+        <div>
+          <div class="label" style="margin-bottom:8px">Жим лёжа, кг</div>
+          <input class="inp" id="si_bench" type="number" min="20" max="400" step="2.5"
+            value="${S._draft ? S._draft.bench : (S.benchPM||'')}" placeholder="напр. 100">
+          <div style="font-size:.6rem;color:var(--t3);margin-top:6px">Расчёт: вес × (1 + повт ÷ 30). Пример: 50 кг × 5 повт → ≈ 58 кг ПМ</div>
+        </div>
+        <div>
+          <div class="label" style="margin-bottom:8px">Присед, кг</div>
+          <input class="inp" id="si_squat" type="number" min="20" max="500" step="2.5"
+            value="${S._draft ? S._draft.squat : (S.squatPM||'')}" placeholder="напр. 120">
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:12px">
+      <div class="section-hdr">
+        <div class="label" style="color:var(--rick)">📅 Дата и дни</div>
+      </div>
+      <div style="padding:16px;display:flex;flex-direction:column;gap:14px">
+        <div>
+          <div class="label" style="margin-bottom:8px">Дата начала цикла</div>
+          <input class="inp" id="si_date" type="date" value="${S._draft ? S._draft.date : (S.startDate||todayStr())}">
+        </div>
+        <div>
+          <div class="label" style="margin-bottom:8px">Дни тренировок</div>
+          <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:5px">
+            ${DAY_NAMES.map((n,i)=>`<button class="day-btn${S.trainingDays.includes(i)?' sel':''}" onclick="toggleDay(${i})">${n}</button>`).join('')}
+          </div>
+          <div style="font-size:.62rem;color:var(--t3);margin-top:8px">
+            ${S.trainingDays.slice().sort((a,b)=>a-b).map(d=>DAY_NAMES[d]).join(', ')}
+          </div>
+          <div style="font-size:.58rem;color:${S.trainingDays.length>=2?'var(--portal)':'var(--red)'};margin-top:4px">
+            ${S.trainingDays.length>=2?'✅ 2 дня выбрано — оптимально для программы':'⚠️ Выбери ровно 2 дня в неделю'}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:24px">
+      <div class="section-hdr">
+        <div class="label" style="color:var(--morty)">📈 Прогрессия ПМ</div>
+      </div>
+      <div style="padding:16px">
+        <div class="label" style="margin-bottom:8px">Рост ПМ в неделю, %</div>
+        <input class="inp" id="si_corr" type="number" min="0.1" max="5" step="0.1" value="${S._draft ? S._draft.corr : (S.corrPct||0.5)}">
+        <div style="font-size:.6rem;color:var(--t3);margin-top:6px">
+          0.5% — рекомендация файла для натуральных атлетов
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-primary green" onclick="saveSetup()">
+      ${isEdit ? '💾 Сохранить' : '🚀 Начать цикл'}
+    </button>
+    ${H(isEdit,'<div style="text-align:center;margin-top:12px"><button onclick="navTo(\'home\')" style="background:none;border:none;color:var(--t3);font-size:.72rem;text-decoration:underline;font-family:var(--font-b)">Отмена</button></div>')}
+  </div>`;
+}
+
+// ── ГЛАВНАЯ ────────────────────────────────────────
+function homeHTML(){
+  const n=S.sessionCount;
+  const week=Math.floor(n/2);
+  const bench=growPM(S.benchPM,week,S.corrPct);
+  const squat=growPM(S.squatPM,week,S.corrPct);
+  const quoteText = rickQ();
+  const isEpCite = quoteText.startsWith('[');
+  const topBanner = (!S.benchPM||!S.squatPM)
+    ? '<div style="background:rgba(255,71,87,.1);border:1px solid rgba(255,71,87,.35);border-radius:var(--r12);padding:12px 16px;margin-bottom:14px;font-size:.76rem;color:var(--red)">⚠️ ПМ не заданы — нажми <b>⚙ ПМ</b> и введи жим лёжа и присед</div>'
+    : '<div class="speech-rick" style="margin-bottom:14px">' + quoteText + '</div>';
+  const sess=SESSIONS[n%24];
+  const today=todayDate();
+  const plannedNext=sessionDate(n);
+  const isToday=plannedNext&&plannedNext.toDateString()===today.toDateString();
+  const isPast=plannedNext&&plannedNext<today;
+
+  // Список упражнений
+  const exRows = sess.exercises.map((exDef,i)=>{
+    const ex=EX[exDef.id];
+    const pm=getExPM(exDef.id,bench,squat);
+    const main=exDef.cl[exDef.cl.length-1];
+    const w=roundW(pm*main.p);
+    const lc=loadColor(exDef.load);
+    return `<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px;${i?'border-top:1px solid var(--bd)':''}">
+      <div>
+        <div style="font-size:.82rem;font-weight:700">${esc(ex.name)}</div>
+        <div style="font-size:.58rem;color:var(--t3);margin-top:2px">${esc(ex.hint)}</div>
+        ${H(exLore(exDef.id),'<div style="font-size:.52rem;color:var(--t4);margin-top:1px;font-style:italic">'+exLore(exDef.id)+'</div>')}
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="badge badge-${loadClass(exDef.load)}">${loadEmoji(exDef.load)} ${loadLabel(exDef.load)}</span>
+        <div style="text-align:right;min-width:54px">
+          <div style="font-family:var(--font-m);font-size:.88rem;font-weight:700;color:${lc}">${w} кг</div>
+          <div style="font-size:.52rem;color:var(--t3)">${pctStr(main.p)}</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Расписание
+  const schedItems=[];
+  for(let i=Math.max(0,n-1);i<n+5;i++){
+    const d=sessionDate(i);if(!d)break;
+    const isNow=i===n,isPst=i<n;
+    const todayMatch=d.toDateString()===today.toDateString();
+    const dotColor=isPst?'var(--t4)':isNow?'var(--portal)':'var(--bd2)';
+    schedItems.push(`<div class="sched-item">
+      <div class="sched-dot" style="background:${dotColor};${isNow?'box-shadow:0 0 6px var(--portal)':''}"></div>
+      <div style="flex:1">
+        <div style="font-size:.76rem;font-weight:${isNow?700:500};color:${isNow?'var(--portal)':isPst?'var(--t3)':'var(--t1)'}">
+          ${fmtDate(d)}${todayMatch&&!isPst?' <span style="font-size:.58rem;color:var(--portal)">· сегодня</span>':''}
+        </div>
+        <div style="font-size:.56rem;color:var(--t3);margin-top:1px">С${i+1} · ${dimension(i)}</div>
+      </div>
+      ${isPst?'<span style="font-size:.82rem">✅</span>':H(isNow,'<span style="font-size:.7rem;font-weight:700;color:var(--portal)">→</span>')}
+    </div>`);
+  }
+
+  return `<div style="padding:20px 16px">
+    <!-- Шапка -->
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px">
+      <div class="portal-ring" onclick="onPortalTap()" style="cursor:pointer" title="Нажми 5 раз..."><div class="portal-inner">⚗️</div></div>
+      <div>
+        <div class="label" style="margin-bottom:4px">LMS · cycle15 · Сессия ${n+1}/24</div>
+        <div class="d2 glitch" style="line-height:1.2">Пора качаться,<br><span style="color:var(--portal)">Морти!</span></div>
+        <div style="font-size:.62rem;color:var(--t3);margin-top:4px">Неделя ${week+1} · ${S.history.length} выполнено</div>
+      </div>
+      <!-- Портальная пушка -->
+      <svg class="portal-gun" viewBox="0 0 80 38" width="56" height="28" style="flex-shrink:0;margin-left:auto">
+        <rect x="8" y="24" width="18" height="11" rx="4" fill="#4ecdc4"/>
+        <rect x="14" y="32" width="8" height="7" rx="2" fill="#3ab8b0"/>
+        <ellipse cx="44" cy="20" rx="22" ry="13" fill="#4ecdc4"/>
+        <rect x="26" y="17" width="17" height="6" rx="2" fill="#3ab8b0"/>
+        <circle cx="33" cy="15" r="3" fill="#00d9ff"/>
+        <circle cx="41" cy="15" r="2" fill="#f5c518"/>
+        <circle cx="64" cy="20" r="10" fill="#0a0818" stroke="#39ff14" stroke-width="2"/>
+        <circle cx="64" cy="20" r="6" fill="#39ff14" opacity=".5"/>
+        <circle cx="64" cy="20" r="3" fill="white"/>
+        <circle cx="66" cy="18" r="1" fill="white" opacity=".8"/>
+      </svg>
+    </div>
+
+    <!-- ПМ блоки -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px">
+      <div class="card" style="padding:12px;text-align:center;border-color:var(--p15)">
+        <div class="label" style="margin-bottom:4px">Жим ПМ</div>
+        <div class="mono" style="font-size:1.05rem;font-weight:700;color:var(--portal)">${bench.toFixed(1)}</div>
+        <div style="font-size:.48rem;color:var(--t3);margin-top:2px">база ${S.benchPM} кг</div>
+      </div>
+      <div class="card" style="padding:12px;text-align:center;border-color:var(--r20)">
+        <div class="label" style="margin-bottom:4px">Присед ПМ</div>
+        <div class="mono" style="font-size:1.05rem;font-weight:700;color:var(--rick)">${squat.toFixed(1)}</div>
+        <div style="font-size:.48rem;color:var(--t3);margin-top:2px">база ${S.squatPM} кг</div>
+      </div>
+      <div class="card" style="padding:12px;text-align:center;border-color:var(--m20)">
+        <div class="label" style="margin-bottom:4px">Рост/нед</div>
+        <div class="mono" style="font-size:1.05rem;font-weight:700;color:var(--morty)">+${S.corrPct}%</div>
+        <div style="font-size:.48rem;color:var(--t3);margin-top:2px">нед ${week+1}</div>
+      </div>
+    </div>
+
+    <!-- Цитата или предупреждение -->
+    ${topBanner}
+
+    <!-- Следующая тренировка -->
+    <div class="card card-glow-g" style="margin-bottom:12px">
+      <div style="padding:16px 16px 12px">
+        <div class="label" style="color:var(--portal);margin-bottom:8px">
+          ${isToday?'📍 Сегодня':isPast?'⚠️ Просрочена':'🗓 Следующая тренировка'}
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div>
+            <div class="d3" style="color:var(--portal)">${plannedNext?fmtFull(plannedNext):'Дата не задана'}</div>
+            <div style="font-size:.62rem;color:var(--t3);margin-top:3px">Сессия ${n+1} · ${n%24+1}/24 цикла · ${sess.exercises.length} упр.</div>
+          </div>
+          <button onclick="navTo('setup')" class="btn-ghost" style="font-size:.62rem;flex-shrink:0">⚙ ПМ</button>
+        </div>
+        <!-- Разминка -->
+        <div style="margin-top:12px;background:var(--s3);border-radius:var(--r12);padding:10px 12px;border:1px solid var(--bd)">
+          <div class="label" style="margin-bottom:4px">🏃 Разминка — «Без разминки ты сломаешься быстрее чем Джерри на собеседовании»</div>
+          <div style="font-size:.68rem;color:var(--t2);line-height:1.5">${esc(sess.warmup)}</div>
+          <div style="font-size:.54rem;color:var(--t3);margin-top:4px">+ 30 мин разминка / заминка / растяжка</div>
+        </div>
+      </div>
+      <!-- Упражнения -->
+      <div style="border-top:1px solid var(--bd)">${exRows}</div>
+      <div style="padding:12px 16px">
+        <button class="btn-primary green" onclick="startWorkout()">🌀 Открыть портал в зал!</button>
+      </div>
+    </div>
+
+    <!-- Расписание -->
+    <div class="card" style="margin-bottom:12px;overflow:hidden">
+      <div class="section-hdr">
+        <div class="label">📅 Расписание</div>
+      </div>
+      ${schedItems.join('')}
+    </div>
+
+    <!-- Экспорт -->
+    <div style="display:flex;gap:8px">
+      <button onclick="exportData()" class="btn-ghost" style="flex:1;padding:10px">💾 Экспорт</button>
+      <button onclick="importData()" class="btn-ghost" style="flex:1;padding:10px">📂 Импорт</button>
+    </div>
+  </div>`;
+}
+
+// ── ТРЕНИРОВКА ─────────────────────────────────────
+function workoutHTML(){
+  const W=S.workout;
+  const tSets=W.exercises.reduce((a,ex)=>a+ex.clusters.reduce((b,c)=>b+c.numSets,0),0);
+  const dSets=W.exercises.reduce((a,ex)=>a+ex.clusters.reduce((b,c)=>b+c.doneSets,0),0);
+  const allDone=dSets===tSets;
+  const elapsed=Math.floor((Date.now()-W.startTime)/1000);
+  const totals=totalMetrics(W.exercises);
+  const pct=tSets?Math.round(dSets/tSets*100):0;
+  const dateOk=W.actualDate===W.plannedDate;
+
+  let exCards='';
+  W.exercises.forEach((ex,ei)=>{
+    const meta=EX[ex.id];
+    const doneEx=ex.clusters.reduce((a,c)=>a+c.doneSets,0);
+    const totalEx=ex.clusters.reduce((a,c)=>a+c.numSets,0);
+    const exDone=doneEx===totalEx;
+    const exp=W.expEx===ei;
+    const lc=loadColor(ex.load);
+
+    let numStyle='';
+    if(exDone) numStyle='done';
+    else if(doneEx>0) numStyle='active';
+
+    let body='';
+    if(exp){
+      let clusters='';
+      ex.clusters.forEach((c,ci)=>{
+        const clDone=c.doneSets===c.numSets;
+        let sets='';
+        for(let si=0;si<c.numSets;si++){
+          const done=si<c.doneSets;
+          sets+=`<button class="set-btn${done?' done':''}" onclick="markSet(${ei},${ci},${done?0:1})">${done?'✓':(si+1)}</button>`;
+        }
+        const mtr=exMetrics(ex.clusters,ex.pm);
+        clusters+=`<div class="cluster${clDone?' done':''}">
+          <div class="cluster-top">
+            <div>
+              <div style="font-family:var(--font-m);font-size:.6rem;color:${clDone?'var(--portal)':lc};font-weight:700;letter-spacing:.08em">${pctStr(c.p)} от ПМ</div>
+              <div style="font-family:var(--font-d);font-size:1.4rem;color:${clDone?'var(--portal)':lc};margin-top:1px">${c.weight} кг</div>
+              <!-- Повторения крупно -->
+              <div style="display:flex;align-items:center;gap:8px;margin-top:6px">
+                <div style="background:${clDone?'var(--p15)':'var(--s4)'};border:1.5px solid ${clDone?'var(--portal)':'var(--bd2)'};border-radius:8px;padding:4px 10px;display:flex;align-items:center;gap:5px">
+                  <span style="font-family:var(--font-d);font-size:1.1rem;color:${clDone?'var(--portal)':lc}">${c.reps}</span>
+                  <span style="font-size:.58rem;color:var(--t2);font-weight:700;text-transform:uppercase;letter-spacing:.1em">повт</span>
+                </div>
+                <div style="font-size:.6rem;color:var(--t3)">${c.doneSets}/${c.numSets} подх</div>
+              </div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:.58rem;color:var(--t3)">ПМ</div>
+              <div class="mono" style="font-size:.8rem;color:var(--t2)">${ex.pm.toFixed(0)} кг</div>
+            </div>
+          </div>
+          <div class="sets-row">${sets}</div>
+        </div>`;
+      });
+
+      const mtr=exMetrics(ex.clusters,ex.pm);
+      const mtrRow=mtr.kpsh>0?`<div class="metrics-row">
+        <div class="metric-chip"><div class="metric-val" style="color:${lc}">${mtr.tonnage.toFixed(0)}</div><div class="metric-lbl">Тоннаж кг</div></div>
+        <div class="metric-chip"><div class="metric-val" style="color:${lc}">${mtr.kpsh}</div><div class="metric-lbl">КПШ</div></div>
+        <div class="metric-chip"><div class="metric-val" style="color:${lc}">${pctStr(mtr.oi)}</div><div class="metric-lbl">ОИ</div></div>
+      </div>`:'';
+
+      body=`<div class="cluster-wrap">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <span class="badge badge-${loadClass(ex.load)}">${loadEmoji(ex.load)} ${loadLabel(ex.load)}</span>
+          <span style="font-size:.6rem;color:var(--t3)">к${meta.koef} · ${esc(meta.hint)}</span>
+          ${H(exLore(ex.id),'<div style="font-size:.54rem;color:var(--t4);margin-top:4px;font-style:italic">'+exLore(ex.id)+'</div>')}
+        </div>
+        ${clusters}
+        ${mtrRow}
+        <div style="margin-top:8px;padding:8px 12px;background:var(--s3);border-radius:var(--r8);font-size:.62rem;color:var(--t3);border:1px solid var(--bd)">
+          ${meta.koef>=1.0?'⏸ 2–3 мин — [S02E04] «Иногда наука — это просто ждать, Морти»':meta.koef>=0.5?'⏸ 90 сек — [S01E05] Мисекс бы не отдыхал. Но ты не Мисекс.':'⏸ 60 сек — [S01E09] «Ты передаёшь масло». Отдыхай.'}
+        </div>
+      </div>`;
+    }
+
+    exCards+=`<div class="ex-card${exp?' expanded':''}">
+      <button class="ex-hdr-btn" onclick="toggleEx(${ei})">
+        <div class="ex-num ${numStyle}">${exDone?'✓':ei+1}</div>
+        <div style="flex:1">
+          <div style="font-size:.84rem;font-weight:700">${esc(meta.name)}</div>
+          <div style="font-size:.6rem;color:var(--t3);margin-top:2px">${esc(meta.hint)}</div>
+        </div>
+        <div style="text-align:right">
+          <div class="mono" style="font-size:.8rem;font-weight:700;color:${lc}">${ex.pm.toFixed(0)} кг</div>
+          <div style="font-size:.54rem;color:var(--t3);margin-top:2px">${doneEx}/${totalEx} подх</div>
+        </div>
+      </button>
+      ${body}
+    </div>`;
+  });
+
+  const fin=allDone?`<div style="position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;padding:16px;background:rgba(8,6,26,.96);backdrop-filter:blur(20px);border-top:1px solid var(--p30)">
+    <button class="btn-primary green" onclick="finishWorkout()" style="animation:glow-pulse 1.5s ease-in-out infinite">🥒 ОГУРЧИК-РИК ДОВОЛЕН! Завершить!</button>
+  </div>`:'';
+
+  return `<div style="min-height:100vh;background:var(--void)">
+    <!-- Шапка тренировки -->
+    <div class="sticky-hdr">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div>
+          <div class="label" style="margin-bottom:3px">📅 ${fmtFull(new Date())}</div>
+          <div class="d3">Сессия ${W.sessionN+1}/24 · <span style="color:var(--portal)">${W.sessionN===23 ? String.fromCodePoint(9760)+' EVIL MORTY' : dimension(W.sessionN)}</span></div>
+          ${H(!dateOk,'<div style="font-size:.58rem;color:var(--red);margin-top:2px">⚠️ По плану: '+fmtDate(new Date(W.plannedDate))+'</div>')}
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span id="tmr" class="mono" style="font-size:.82rem;color:var(--t2)">${timeStr(elapsed)}</span>
+          <button class="btn-ghost" onclick="cancelWorkout()">Отмена</button>
+        </div>
+      </div>
+      <!-- Разминка -->
+      <div style="background:var(--s3);border-radius:var(--r8);padding:8px 12px;margin-bottom:10px;border:1px solid var(--bd)">
+        <span class="label" style="margin-right:6px">🏃 Разминка</span>
+        <span style="font-size:.65rem;color:var(--t2)">${esc(W.warmup)}</span>
+      </div>
+      <!-- Прогресс -->
+      <div class="pbar" style="margin-bottom:6px">
+        <div class="pbar-fill" style="width:${pct}%;background:var(--portal);box-shadow:0 0 8px var(--p30)"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:.6rem;color:var(--t3);margin-bottom:10px">
+        <span>Подходов: <b style="color:var(--t1)">${dSets}/${tSets}</b> ${allDone?'<span style="color:var(--portal)">✓ Готово!</span>':''}</span>
+        ${H(totals.kpsh>0,'<span class="mono">Тоннаж <b style="color:var(--portal)">'+totals.tonnage.toFixed(0)+' кг</b> · КПШ <b style="color:var(--portal)">'+totals.kpsh+'</b></span>')}
+      </div>
+    </div>
+    <!-- Упражнения -->
+    <div style="padding:12px 16px ${allDone?'120':'16'}px">
+    ${isEvilMorty(W.sessionN)?'<div class="evil-morty-banner"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><svg width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="none" stroke="#ff4757" stroke-width="1.5"/><circle cx="12" cy="12" r="6" fill="rgba(255,71,87,.15)"/><ellipse cx="7" cy="10" rx="3" ry="3.5" fill="white"/><circle cx="7" cy="10" r="2" fill="#1a1a2e"/><line x1="4" y1="8" x2="10" y2="12" stroke="#ff4757" stroke-width="1.5"/><circle cx="17" cy="10" rx="3" ry="3.5" fill="white"/><circle cx="17" cy="10" r="2" fill="#1a1a2e"/><path d="M10 15 Q12 17 14 15" fill="none" stroke="#ff4757" stroke-width="1"/></svg><span style="font-size:.62rem;font-weight:700;color:var(--red);letter-spacing:.14em;text-transform:uppercase">👁 ФИНАЛ · СЕССИЯ 24 · EVIL MORTY</span></div><div style="font-size:.62rem;color:var(--t2);font-style:italic">«Я всегда был умнейшим Морти из всех измерений.»<br><span style="color:var(--red);font-style:normal">Последняя сессия цикла. Докажи это.</span></div></div>':''}
+    ${isPickleMode(W.sessionN)&&!isEvilMorty(W.sessionN)?'<div class="card pickle-mode" style="margin-bottom:10px;overflow:hidden"><div style="padding:10px 14px;font-size:.65rem;color:var(--portal)">🥒 PICKLE RICK MODE — Рик гордится. Морти испуган.</div></div>':''}
+    ${exCards}
+  </div>
+    ${fin}
+  </div>`;
+}
+
+// ── ИТОГ ───────────────────────────────────────────
+function summaryHTML(){
+  const{rec,needsCorrection,corrected}=S.summary;
+
+  if(needsCorrection){
+    const diff=Math.round((new Date(rec.date)-new Date(rec.plannedDate))/86400000);
+    return`<div class="sum-screen fade-up">
+      <div class="sum-hero">
+        <div style="font-size:3rem;margin-bottom:16px">📅</div>
+        <div class="d2" style="color:var(--morty);margin-bottom:6px">Дата не совпала</div>
+        <div style="font-size:.72rem;color:var(--t3)">Тренировка завершена успешно</div>
+      </div>
+      <div class="correction-card">
+        <div class="label" style="color:var(--red);margin-bottom:12px">Несовпадение даты</div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:.76rem">
+          <span style="color:var(--t3)">По плану</span>
+          <b>${fmtFull(new Date(rec.plannedDate))}</b>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:.76rem">
+          <span style="color:var(--t3)">Фактически</span>
+          <b style="color:var(--portal)">${fmtFull(new Date(rec.date))}</b>
+        </div>
+      </div>
+      <div class="card" style="padding:16px;margin-bottom:12px">
+        <div style="font-size:.8rem;font-weight:700;margin-bottom:8px">Скорректировать расписание?</div>
+        <div style="font-size:.66rem;color:var(--t3);margin-bottom:16px;line-height:1.5">
+          Все будущие тренировки сдвинутся на ${diff>0?'+':''}${diff} дн.
+        </div>
+        <button class="btn-primary green" onclick="doCorrect()" style="margin-bottom:8px">📅 Сдвинуть расписание</button>
+        <button onclick="skipCorrect()" style="width:100%;padding:12px;background:var(--s3);border:1px solid var(--bd);border-radius:var(--r12);color:var(--t2);font-family:var(--font-b);font-size:.82rem">Оставить как есть</button>
+      </div>
+    </div>`;
+  }
+
+  const exRows=rec.exercises.map(ex=>{
+    const meta=EX[ex.id];
+    const lc=loadColor(ex.load||'medium');
+    return`<div style="padding:10px 0;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <div style="font-size:.78rem;font-weight:700">${esc(meta.name)}</div>
+        <div style="font-size:.58rem;color:var(--t3);margin-top:2px">
+          <span class="badge badge-${loadClass(ex.load||'medium')}" style="font-size:.5rem">${loadEmoji(ex.load||'medium')} ${loadLabel(ex.load||'medium')}</span>
+          <span style="margin-left:6px">ПМ ${ex.pm.toFixed(1)} кг · КПШ ${ex.kpsh}</span>
+        </div>
+      </div>
+      <div style="text-align:right">
+        <div class="mono" style="font-size:.82rem;font-weight:700;color:${lc}">${ex.tonnage.toFixed(0)} кг</div>
+        <div style="font-size:.54rem;color:var(--t3)">ОИ ${pctStr(ex.oi)}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  const nextD=sessionDate(S.sessionCount);
+  return`<div class="sum-screen fade-up">
+    <div class="sum-hero">
+      <div class="portal-ring" style="width:80px;height:80px;margin:0 auto 20px">
+        <div class="portal-inner" style="width:64px;height:64px;font-size:1.8rem">⚗️</div>
+      </div>
+      <div class="d1 glitch" style="color:var(--portal);margin-bottom:4px">WUBBA LUBBA<br>DUB DUB!</div>
+      <div style="font-size:.8rem;color:var(--rick);margin-bottom:6px">Готово, Морти! Я горжусь тобой.</div>
+      <div style="font-size:.72rem;color:var(--t3)">${fmtFull(new Date(rec.date))} · ${rec.duration} мин</div>
+      <div style="font-size:.65rem;color:var(--portal);margin-top:3px">📡 Измерение ${dimension(rec.sessionN)} · Сессия ${rec.sessionN+1}/24</div>
+      ${H(corrected,'<div style="font-size:.66rem;color:var(--portal);margin-top:6px">✓ Расписание скорректировано</div>')}
+    </div>
+
+    <div class="card" style="padding:16px;margin-bottom:12px">
+      <div class="label" style="color:var(--portal);margin-bottom:12px">📊 LMS · Портальный Анализ C-137</div>
+      <div style="font-size:.52rem;color:var(--t3);margin-bottom:12px;font-family:var(--font-m)">// session.metrics.calculate() → OK</div>
+      <div style="font-size:.6rem;color:var(--t4);margin-bottom:10px;font-style:italic">[S01E09] «Какова твоя цель?» — «Передавать масло» — «О боже... Добро пожаловать в клуб.»</div>
+      <div class="metrics-grid">
+        <div class="metric-cell"><div class="metric-cell-val num-glow" style="color:var(--portal)">${rec.total.tonnage.toFixed(0)}</div><div class="metric-cell-lbl">Тоннаж кг</div></div>
+        <div class="metric-cell"><div class="metric-cell-val num-glow" style="color:var(--portal)">${rec.total.kpsh}</div><div class="metric-cell-lbl">КПШ</div></div>
+        <div class="metric-cell"><div class="metric-cell-val" style="color:var(--rick)">${rec.total.avg.toFixed(1)}</div><div class="metric-cell-lbl">Ср.вес кг</div></div>
+        <div class="metric-cell"><div class="metric-cell-val" style="color:var(--morty)">${rec.duration}</div><div class="metric-cell-lbl">Время мин</div></div>
+      </div>
+    </div>
+
+    <div class="card" style="padding:14px 16px;margin-bottom:12px">
+      <div class="label" style="margin-bottom:10px">По упражнениям</div>
+      ${exRows}
+    </div>
+
+    <div style="padding:10px 14px;background:var(--p08);border:1px solid var(--p15);border-radius:var(--r12);margin-bottom:16px;font-size:.7rem">
+      ${S.sessionCount>=24 ? '☠️ <b>EVIL MORTY ОДОБРЯЕТ.</b> 24/24. Макроцикл завершён. Тестируй новый ПМ.' : '🗓 <b>Следующая:</b> '+(nextD?fmtFull(nextD):'—')+' · Сессия '+(S.sessionCount+1)+'/24'}
+    </div>
+
+    <!-- Szechuan Sauce Score — секретная метрика -->
+    <div style="margin-bottom:12px;padding:12px 16px;background:rgba(245,197,24,.06);border:1px dashed rgba(245,197,24,.3);border-radius:var(--r12);text-align:center">
+      <div class="label" style="color:var(--morty);margin-bottom:6px">🍗 Szechuan Sauce Score™ [S3E1]</div>
+      <div class="mono" style="font-size:1.4rem;font-weight:700;color:var(--morty)">${(rec.total.tonnage/137).toFixed(1)}</div>
+      <div style="font-size:.6rem;color:var(--t3);margin-top:3px">тоннаж ÷ 137 (измерение C-137) · секретная метрика Рика</div>
+    </div>
+    <button class="btn-primary green" onclick="closeSummary()">Домой →</button>
+  </div>`;
+}
+
+// ── ИСТОРИЯ ────────────────────────────────────────
+function historyHTML(){
+  if(!S.history.length){
+    return`<div class="screen">
+      <div class="empty-state">
+        <div style="font-size:3rem;margin-bottom:16px">📋</div>
+        <div class="d3" style="margin-bottom:8px">История пустая</div>
+        <div style="font-size:.72rem;color:var(--t3);margin-bottom:8px">Начни первую тренировку!</div>
+        <div style="font-size:.62rem;color:var(--t4);margin-top:4px">«Морти, портал не откроется сам» — Рик</div>
+      </div>
+    </div>`;
+  }
+  const items=S.history.map((rec,ri)=>{
+    const lc=loadColor(rec.exercises[0]?.load||'medium');
+    const exR=rec.exercises.map(ex=>{
+      const meta=EX[ex.id];
+      const lc2=loadColor(ex.load||'medium');
+      return`<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--bd)">
+        <div>
+          <div style="font-size:.74rem;font-weight:700">${esc(meta.name)}</div>
+          <div style="font-size:.58rem;color:var(--t3);margin-top:1px">${loadEmoji(ex.load||'medium')} ${loadLabel(ex.load||'medium')} · КПШ ${ex.kpsh}</div>
+        </div>
+        <div style="text-align:right">
+          <div class="mono" style="color:${lc2};font-weight:700">${ex.tonnage.toFixed(0)} кг</div>
+          <div style="font-size:.54rem;color:var(--t3)">ОИ ${pctStr(ex.oi)}</div>
+        </div>
+      </div>`;
+    }).join('');
+    const dateOk=rec.date===rec.plannedDate;
+    return`<div class="hist-item">
+      <div class="hist-accent" style="background:var(--portal)"></div>
+      <button class="hist-hdr-btn" onclick="toggleHist(${ri})">
+        <div style="flex:1">
+          <div style="font-weight:700;font-size:.82rem">${fmtDate(new Date(rec.date))} · Сессия ${rec.sessionN+1}</div>
+          <div style="font-size:.6rem;color:var(--t3);margin-top:3px">
+            ${rec.duration} мин · <span class="mono">${rec.total.tonnage.toFixed(0)} кг</span> · КПШ ${rec.total.kpsh}
+            ${H(!dateOk,'<span style="color:var(--red)"> · план: '+fmtDate(new Date(rec.plannedDate))+'</span>')}
+          </div>
+        </div>
+        <span style="font-size:.7rem;color:var(--t3);margin-left:8px">▾</span>
+      </button>
+      <div id="hb${ri}" style="display:none" class="hist-body">${exR}</div>
+    </div>`;
+  }).join('');
+  return`<div class="screen">
+    <div class="d3" style="margin-bottom:6px">История Морти</div>
+    <div style="font-size:.62rem;color:var(--t3);margin-bottom:8px">${S.history.length} тренировок</div>
+    <div class="rick-quote" style="margin-bottom:16px">"[S2E6] В 99% измерений ты бы бросил после первой недели. Ты — из 1%."</div>
+    ${items}
+  </div>`;
+}
+
+// ── ПРОГРЕСС ───────────────────────────────────────
+function progressHTML(){
+  const week=Math.floor(S.sessionCount/2);
+  const bench=growPM(S.benchPM,week,S.corrPct);
+  const squat=growPM(S.squatPM,week,S.corrPct);
+  const n=S.sessionCount;
+
+  const exRows=Object.entries(EX).filter(([id])=>id!=='bench2').map(([id,meta])=>{
+    const pm=getExPM(id,bench,squat);
+    return`<div style="padding:10px 16px;border-top:1px solid var(--bd);display:flex;align-items:center">
+      <div style="flex:1">
+        <div style="font-size:.78rem;font-weight:700">${esc(meta.name)}</div>
+        <div style="font-size:.56rem;color:var(--t3);margin-top:1px">к${meta.koef} · ${meta.pmOf==='squat'?'присед':'жим'} × ${meta.ratio}</div>
+      </div>
+      <div class="mono" style="font-size:.9rem;font-weight:700;color:var(--portal)">${pm.toFixed(1)} кг</div>
+    </div>`;
+  }).join('');
+
+  const forecast=[0,4,8,12,15].map(w=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bd);font-size:.7rem;align-items:center">
+    <span style="color:var(--t3)">Нед ${w+1}</span>
+    <span>Жим <b class="mono" style="color:var(--portal)">${growPM(S.benchPM,w,S.corrPct).toFixed(1)}</b> · Присед <b class="mono" style="color:var(--rick)">${growPM(S.squatPM,w,S.corrPct).toFixed(1)}</b> кг</span>
+  </div>`).join('');
+
+  return`<div class="screen">
+    <div class="d3" style="margin-bottom:6px">Прогресс, Морти</div>
+    <div style="font-size:.62rem;color:var(--t3);margin-bottom:8px">Неделя ${week+1} · +${S.corrPct}%/нед</div>
+    <div class="morty-note" style="margin-bottom:16px">«0.5% в неделю — это не медленно, Морти. Это *наука*. Джерри до сих пор топчется на месте.»</div>
+
+    <div class="card" style="margin-bottom:12px;overflow:hidden">
+      <div class="section-hdr">
+        <div class="label" style="color:var(--portal)">⚗️ База C-137 · Текущий ПМ</div>
+      </div>
+      ${exRows}
+    </div>
+
+    <div class="card" style="padding:14px 16px;margin-bottom:12px">
+      <div class="label" style="color:var(--morty);margin-bottom:12px">📈 Прогноз ПМ</div>
+      ${forecast}
+    </div>
+
+    <div class="card" style="padding:14px 16px">
+      <div class="label" style="margin-bottom:12px">📐 Формулы из cycle15</div>
+      ${[['Тоннаж','Σ(вес × повт × подходы)'],['КПШ','Σ(повт × подходы)'],['Ср.вес','Тоннаж ÷ КПШ'],['ОИ','Ср.вес ÷ ПМ × 100%'],['ПМ рост','ПМ_баз × (1 + 0.5%)^нед']].map(([t,d])=>`
+      <div style="display:flex;gap:12px;margin-bottom:8px;align-items:flex-start">
+        <div class="mono" style="font-size:.66rem;color:var(--portal);min-width:60px">${t}</div>
+        <div style="font-size:.63rem;color:var(--t3);line-height:1.5">${d}</div>
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+// ── НАВИГАЦИЯ ──────────────────────────────────────
+function navHTML(a){
+  return`<nav id="nav">${[['home','🌀','База C-137'],['history','📼','Архив'],['progress','⚗️','Лаба']].map(([s,ic,l])=>
+    `<button class="nb${a===s?' active':''}" onclick="navTo('${s}')">
+      <span class="nb-icon">${ic}</span>
+      <span class="nb-label">${l}</span>
+    </button>`).join('')}</nav>`;
+}
+
+// ── РЕНДЕР ─────────────────────────────────────────
+function render(){
+  const app=document.getElementById('app');
+  if(S.summary){app.innerHTML=summaryHTML();return;}
+  if(S.screen==='workout'&&S.workout){app.innerHTML=workoutHTML();return;}
+  if(S.screen==='setup'){app.innerHTML=setupHTML();return;}
+  let c='';
+  if(S.screen==='home')    c=homeHTML();
+  if(S.screen==='history') c=historyHTML();
+  if(S.screen==='progress')c=progressHTML();
+  app.innerHTML=c+navHTML(S.screen);
+}
+render();
+</script>
+</body>
+</html>
