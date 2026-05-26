@@ -383,7 +383,7 @@ button { font-family: var(--font-b); cursor: pointer; }
 .portal-ring img, .portal-img {
   width:100%; height:100%;
   border-radius:50%;
-  mix-blend-mode:screen;
+  
   object-fit:cover;
 }
 .portal-inner {
@@ -1316,7 +1316,7 @@ function setupHTML(){
     </div>`;
   } else {
     header = `<div style="text-align:center;margin-bottom:32px">
-      <div class="portal-ring" style="width:80px;height:80px;margin:0 auto 20px"><img class="portal-img" alt="portal"></div>
+      <div class="portal-ring" style="width:80px;height:80px;margin:0 auto 20px"><img src="${PORTAL_IMG}" style="width:100%;height:100%;border-radius:50%;object-fit:cover" alt="portal"></div>
       <div class="d2" style="color:var(--portal);margin-bottom:6px">LMS Gym</div>
       <div style="font-size:.7rem;color:var(--t3)">Система периодизации · cycle15 · C-137</div>
     </div>`;
@@ -1453,7 +1453,7 @@ function homeHTML(){
   return `<div style="padding:20px 16px">
     <!-- Шапка -->
     <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px">
-      <div class="portal-ring" onclick="onPortalTap()" style="cursor:pointer" title="Нажми 5 раз..."><img src="${PORTAL_IMG}" alt="portal"></div>
+      <div class="portal-ring" onclick="onPortalTap()" style="cursor:pointer" title="Нажми 5 раз..."><img src="${PORTAL_IMG}" style="width:100%;height:100%;border-radius:50%;object-fit:cover" alt="portal"></div>
       <div>
         <div class="label" style="margin-bottom:4px">LMS · cycle15 · Сессия ${n+1}/24</div>
         <div class="d2 glitch" style="line-height:1.2">Пора качаться,<br><span style="color:var(--portal)">Морти!</span></div>
@@ -1720,7 +1720,7 @@ function summaryHTML(){
   const nextD=sessionDate(S.sessionCount);
   return`<div class="sum-screen fade-up">
     <div class="sum-hero">
-      <div class="portal-ring" style="width:80px;height:80px;margin:0 auto 20px"><img class="portal-img" alt="portal"></div>
+      <div class="portal-ring" style="width:80px;height:80px;margin:0 auto 20px"><img src="${PORTAL_IMG}" style="width:100%;height:100%;border-radius:50%;object-fit:cover" alt="portal"></div>
       <div class="d1 glitch" style="color:var(--portal);margin-bottom:4px">WUBBA LUBBA<br>DUB DUB!</div>
       <div style="font-size:.8rem;color:var(--rick);margin-bottom:6px">Готово, Морти! Я горжусь тобой.</div>
       <div style="font-size:.72rem;color:var(--t3)">${fmtFull(new Date(rec.date))} · ${rec.duration} мин</div>
