@@ -169,13 +169,7 @@ button { font-family: var(--font-b); cursor: pointer; }
 /* ── ПОРТАЛ ─────────────────────────────────────── */
 @keyframes spin { to { transform:rotate(360deg); } }
 @keyframes portal-pulse { 0%,100%{opacity:.8}50%{opacity:1} }
-/* ── Силуэт Рика — фоновый декор ────────────── */
-.rick-silhouette {
-  position:fixed; bottom:80px; right:-8px;
-  pointer-events:none; z-index:0;
-  opacity:.05; filter:drop-shadow(0 0 12px var(--portal));
-  animation:float 6s ease-in-out infinite;
-}
+/* rick-silhouette убран — opacity:.05 почти не виден, float анимация лишняя */
 
 /* ── Терминальные данные — scan-line ──────────── */
 @keyframes scanline {
@@ -287,19 +281,12 @@ button { font-family: var(--font-b); cursor: pointer; }
 .badge-portal  { background:var(--r08); color:var(--rick);   border-color:var(--r20); }
 .badge-jerry   { background:rgba(90,79,122,.3); color:var(--t2);    border-color:var(--bd2); }
 
-
 /* ── СПЛЭШ ───────────────────────────────────────────── */
-
-
-
-
-
 
 @keyframes scan {
   0%  { transform:translateY(-100%); opacity:.6; }
   100%{ transform:translateY(100vh);  opacity:0; }
 }
-
 
 /* ── Фоновый портал ──────────────────────────────────── */
 #portal-bg {
@@ -319,20 +306,7 @@ button { font-family: var(--font-b); cursor: pointer; }
   content:''; position:absolute; inset:0; pointer-events:none;
   background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(57,255,20,.015) 2px,rgba(57,255,20,.015) 4px);
 }
-/* ── Анимированный портальный фон ────────────── */
-@keyframes portal-bg-spin {
-  from { transform:translate(-50%,-50%) rotate(0deg); }
-  to   { transform:translate(-50%,-50%) rotate(360deg); }
-}
-.portal-bg-decor {
-  position:fixed; width:600px; height:600px; border-radius:50%;
-  top:40%; left:50%;
-  background:conic-gradient(from 0deg,rgba(57,255,20,.03),rgba(0,217,255,.02),rgba(168,85,247,.03),transparent,rgba(57,255,20,.03));
-  animation:portal-bg-spin 30s linear infinite;
-  pointer-events:none; z-index:0;
-  filter:blur(40px);
-  will-change:transform;
-}
+/* portal-bg-decor убран — тяжёлый blur(40px) на 600px на мобилах */
 
 /* ── Попап завершения упражнения ─────────────── */
 @keyframes popup-in  { from{opacity:0;transform:translateY(20px) scale(.9)} to{opacity:1;transform:translateY(0) scale(1)} }
@@ -441,7 +415,7 @@ button { font-family: var(--font-b); cursor: pointer; }
 }
 
 /* ── ЭКРАНЫ ─────────────────────────────────────── */
-.screen { padding:20px 16px; }
+.screen { padding:24px 16px; }
 
 /* ── ТРЕНИРОВКА ─────────────────────────────────── */
 .sticky-hdr {
@@ -458,7 +432,7 @@ button { font-family: var(--font-b); cursor: pointer; }
   border:1px solid var(--bd);
   border-radius:var(--r20);
   overflow:hidden;
-  margin-bottom:8px;
+  margin-bottom:12px;
   transition:border-color .2s;
 }
 .ex-card.expanded { border-color:var(--bd2); }
@@ -556,7 +530,7 @@ button { font-family: var(--font-b); cursor: pointer; }
 .hist-item {
   background:var(--s2); border:1px solid var(--bd);
   border-radius:var(--r16); overflow:hidden;
-  margin-bottom:8px; position:relative;
+  margin-bottom:12px; position:relative;
 }
 .hist-accent {
   position:absolute; left:0; top:0; bottom:0; width:3px;
@@ -608,6 +582,12 @@ button { font-family: var(--font-b); cursor: pointer; }
 .rm-modal-ttl{font-family:var(--font-d);font-size:1.05rem;color:var(--portal);margin-bottom:10px}
 .rm-modal-txt{font-size:.76rem;color:var(--t2);line-height:1.65;margin-bottom:20px}
 .rm-modal-btns{display:flex;flex-direction:column;gap:8px}
+
+/* ── Reduced motion — для слабых устройств ── */
+@media (prefers-reduced-motion: reduce) {
+  .glitch, .float, .num-glow, .portal-ring,
+  .portal-decor, #portal-bg { animation:none !important; }
+}
 </style>
 </head>
 <body>
@@ -961,10 +941,6 @@ function todayStr(){return new Date().toISOString().slice(0,10);}
 function todayDate(){const d=new Date();d.setHours(0,0,0,0);return d;}
 function fmtDate(d){if(!d)return'—';const dd=d instanceof Date?d:new Date(d);return`${DAY_NAMES[dd.getDay()]} ${dd.getDate()} ${MONTH_SHORT[dd.getMonth()]}`;}
 function fmtFull(d){if(!d)return'—';const dd=d instanceof Date?d:new Date(d);return`${DAY_NAMES[dd.getDay()]}, ${dd.getDate()} ${MONTH_SHORT[dd.getMonth()]} ${dd.getFullYear()}`;}
-function timeStr(s){return Math.floor(s/60)+':'+(s%60+'').padStart(2,'0');}
-function pctStr(v){return(v*100).toFixed(0)+'%';}
-function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-
 function shiftSchedule(actualStr) {
   const planned = sessionDate(S.sessionCount-1);
   if(!planned) return;
@@ -1011,30 +987,7 @@ function importData(){
     if(d.history)S.history=d.history;
     saveSave();
 
-// Портальный фон и силуэт Рика
-setTimeout(function(){
-  const p=document.createElement('div');
-  p.className='portal-bg-decor';
-  document.body.appendChild(p);
-
-  // Силуэт Рика в правом нижнем углу
-  const rs=document.createElement('div');
-  rs.className='rick-silhouette';
-  rs.innerHTML='<svg viewBox="0 0 90 190" width="90" height="190" fill="var(--portal)">'+
-    '<ellipse cx="45" cy="28" rx="19" ry="22"/>'+
-    '<polygon points="28,16 22,4 33,13"/>'+
-    '<polygon points="37,11 34,1 43,9"/>'+
-    '<polygon points="52,11 55,1 63,11"/>'+
-    '<rect x="28" y="50" width="34" height="68" rx="6"/>'+
-    '<rect x="14" y="53" width="11" height="52" rx="5" transform="rotate(-8,14,53)"/>'+
-    '<rect x="65" y="53" width="11" height="52" rx="5" transform="rotate(8,76,53)"/>'+
-    '<rect x="30" y="116" width="13" height="58" rx="5"/>'+
-    '<rect x="47" y="116" width="13" height="58" rx="5"/>'+
-    '<ellipse cx="13" cy="98" rx="6" ry="11" fill="var(--rick)"/>'+
-    '<circle cx="13" cy="90" r="4" fill="var(--portal)"/>'+
-    '</svg>';
-  document.body.appendChild(rs);
-}, 200);
+// portal-bg-decor и rick-silhouette убраны (тяжёлый blur + лишний float)
 
 // Звёзды и портал — после загрузки UI (requestIdleCallback или setTimeout)
 setTimeout(function(){
@@ -1222,7 +1175,6 @@ function toggleHist(i){const el=document.getElementById('hb'+i);if(el)el.style.d
 // ЭКРАНЫ
 // ════════════════════════════════════════════════════════
 
-
 // ── Размерения C-137 — для каждой из 24 сессий ───────────
 const DIMENSIONS = [
   'C-137','J-19Ζ-7','C-500A','Cronenberg',
@@ -1234,17 +1186,77 @@ const DIMENSIONS = [
 ];
 function dimension(n){ return DIMENSIONS[n%24]; }
 
-// ── Лор упражнений ────────────────────────────────────────
+// ── Лор упражнений — пул фраз, ротация по номеру сессии ───
 const EX_LORE = {
-  bench1:  '[S03E03] База C-137. Огурчик-Рик жал лёжа до превращения.',
-  bench2:  '[S01E05] Объёмный жим — как Мисекс: много подходов, одна цель.',
-  squat:   '[S01E06] S01E06: Морти использовал присед при побеге с Gazorpazorp.',
-  bicep:   '[S01E02] Tiny Rick кричал «LET ME OUT» но бицепс рос.',
-  db:      '[S02E03] Bird Person тренировал грудь перед каждой битвой.',
-  french:  '[S02E06] Французский жим — изобретение измерения J-19Ζ-7.',
-  incline: '[S03E01] Citadel of Ricks. Обязательное упражнение для всех Риков.',
+  bench1: [
+    '[S03E03] База C-137. Огурчик-Рик жал лёжа до превращения.',
+    '[S01E01] Рик жал штангу пока Морти ещё спал. Это и есть преимущество.',
+    '[S04E08] «Жим — это как порталы: либо ты контролируешь штангу, либо она тебя.»',
+    '[S02E01] Бетти из измерения C-500 жала 200 кг. Тебе есть куда расти.',
+    '[S03E07] «Каждый килограмм сверх ПМ — маленькая победа над энтропией.»',
+    '[S01E09] «Штанга не знает кто ты. Ей всё равно. В этом и суть.»',
+    '[S04E02] Жим лёжа — единственное упражнение которое Рик делает без комментариев.',
+  ],
+  bench2: [
+    '[S01E05] Объёмный жим — как Мисекс: много подходов, одна цель.',
+    '[S02E04] Второй жим делают только сильные. Или те кого Рик не отпустил.',
+    '[S03E04] «Повторение — мать учения. Второй жим — отец силы.»',
+    '[S01E10] Acid Rain не остановил Рика от второго жима. Тебя тоже не остановит.',
+    '[S02E06] «Ты делаешь это второй раз за тренировку. Respect, Морти.»',
+    '[S04E05] В Citadel все Рики делают второй жим. Это традиция измерения C-137.',
+    '[S03E01] «Объём строит мышцы. Интенсивность строит силу. Оба — обязательны.»',
+  ],
+  squat: [
+    '[S01E06] Морти использовал присед при побеге с Gazorpazorp.',
+    '[S03E03] Огурчик-Рик не мог приседать. Это его главная слабость.',
+    '[S02E01] «Ноги — это не просто опора. Это двигатель, Морти.»',
+    '[S04E06] Присед в полную глубину — требование всех версий Рика без исключений.',
+    '[S01E09] «Без приседа тоннаж — просто красивые цифры. А мы не про красоту.»',
+    '[S03E07] Деревья на Purge Planet не приседают. Поэтому их пилят.',
+    '[S02E03] Bird Person говорил: «Сильные ноги — долгая жизнь в любом измерении».',
+  ],
+  bicep: [
+    '[S01E02] Tiny Rick кричал «LET ME OUT» но бицепс рос.',
+    '[S03E05] «Бицепс — это витрина. Но мы строим склад, Морти.»',
+    '[S02E04] Все Рики в Citadel имеют одинаковый бицепс. Кроме одного.',
+    '[S01E06] Gazorpazorpfield оценивал силу по бицепсу. Примитивно, но работает.',
+    '[S04E01] «Curl — это медитация для тех кто не умеет медитировать.»',
+    '[S02E10] Снежинки уникальны. Твой бицепс тоже — если ты его тренируешь.',
+    '[S03E03] «Маленький мышечный волокно + 24 сессии = другой человек.»',
+  ],
+  db: [
+    '[S02E03] Bird Person тренировал грудь гантелями перед каждой битвой.',
+    '[S01E05] Мисекс всегда выбирал гантели. «Can do!» — его вечный девиз.',
+    '[S03E03] Гантели не превратить в огурчика. Они уже совершенны.',
+    '[S04E02] «Две гантели — два портала. Синхронность решает всё.»',
+    '[S02E06] В измерении J-19Ζ-7 гантели весят в 2 раза больше. Твои — подарок.',
+    '[S01E09] «Гантели честнее штанги. Каждая рука отвечает сама за себя.»',
+    '[S04E05] Независимый диапазон движения — главное преимущество. Рик это знает.',
+  ],
+  french: [
+    '[S02E06] Французский жим — изобретение измерения J-19Ζ-7.',
+    '[S01E03] «Трицепс — это 2/3 руки, Морти. Математика не врёт.»',
+    '[S04E05] Все версии Evil Morty тренировали трицепс. Это не совпадение.',
+    '[S03E01] Рик называет французский жим «черепным дробителем». Небезосновательно.',
+    '[S02E04] «EZ-гриф изобрели в измерении где у всех болят локти. Гениально.»',
+    '[S01E09] Трицепс толкает. Бицепс тянет. Вселенная в балансе.',
+    '[S03E07] «Локти у уши. Полная амплитуда. Никаких компромиссов.»',
+  ],
+  incline: [
+    '[S03E01] Citadel of Ricks. Обязательное упражнение для всех Риков.',
+    '[S04E08] «Угол 45 градусов — оптимум между силой и гипертрофией. Наука.»',
+    '[S02E01] Наклонный жим строит верхнюю грудь. Рик это знал в 12 лет.',
+    '[S01E05] Мисекс на наклонной скамье — зрелище. «CAN DO» в полный голос.',
+    '[S03E07] «Все качают низ груди. Немногие — верх. Ты из немногих.»',
+    '[S02E06] В измерении Пурж наклонный жим запрещён. Слишком эффективен.',
+    '[S04E01] «Верхняя грудь — первое что видят. Нижняя — первое что теряют.»',
+  ],
 };
-function exLore(id){ return EX_LORE[id] || ''; }
+function exLore(id, sessionN){
+  const pool = EX_LORE[id];
+  if(!pool) return '';
+  return pool[(sessionN||0) % pool.length];
+}
 
 // ── Реакции на завершение упражнения ──────────────────────
 const EX_DONE_Q = [
@@ -1260,23 +1272,9 @@ const EX_DONE_Q = [
   '«Existence is pain» — но ты справился.',
 ];
 let exDoneIdx = 0;
-function nextDoneQ(){ return EX_DONE_Q[exDoneIdx++ % EX_DONE_Q.length]; }
 
 // ── Счётчик тапов по порталу (пасхалка) ──────────────────
 let portalTaps = 0, portalTimer = null;
-function showExDonePopup(msg){
-  const old = document.querySelector('.ex-popup');
-  if(old) old.remove();
-  const el = document.createElement('div');
-  const isMorty = msg.startsWith('Морти:');
-  el.className = 'ex-popup';
-  el.style.cssText = isMorty
-    ? 'border-color:rgba(245,197,24,.5);color:var(--morty);box-shadow:0 4px 24px rgba(245,197,24,.2)'
-    : 'border-color:rgba(57,255,20,.5);color:var(--portal);box-shadow:0 4px 24px rgba(57,255,20,.2)';
-  el.textContent = msg;
-  document.body.appendChild(el);
-  setTimeout(()=>{ el.style.animation='popup-out .3s ease forwards'; setTimeout(()=>el.remove(),300); }, 2400);
-}
 
 function onPortalTap(){
   portalTaps++;
@@ -1333,21 +1331,6 @@ const RICK_Q = [
 ];
 function rickQ() { return RICK_Q[Math.floor(Date.now()/86400000) % RICK_Q.length]; }
 
-// Реплика для типа нагрузки
-function loadQuip(l) {
-  if(l==='heavy') return 'Огурчик-Рик одобряет 🥒';
-  if(l==='medium') return 'Портальный режим 🌀';
-  return 'Режим Джерри 😬';
-}
-// Реплика после завершения подхода
-function setQuip(done, total) {
-  if(done===total) return '🥒 Огурчик-Рик доволен!';
-  if(done===0) return 'Давай, Морти!';
-  return `${done}/${total} — не останавливайся!`;
-}
-
-
-
 // ── Тост Мисекса при завершении упражнения ─────────────
 const MEESEEKS_Q = [
   "I'm Mr. Meeseeks! Look at me! ✅",
@@ -1369,7 +1352,6 @@ function showMeeseeksToast() {
 
 // ── Хелперы для безопасных шаблонов (без вложенных бэктиков) ──
 function H(cond, html, els){ return cond ? html : (els||''); }
-
 
 // ── УТИЛИТЫ ────────────────────────────────────────
 function timeStr(s){return Math.floor(s/60)+':'+(s%60+'').padStart(2,'0');}
@@ -1494,7 +1476,7 @@ function homeHTML(){
       <div>
         <div style="font-size:.82rem;font-weight:700">${esc(ex.name)}</div>
         <div style="font-size:.58rem;color:var(--t3);margin-top:2px">${esc(ex.hint)}</div>
-        ${H(exLore(exDef.id),'<div style="font-size:.52rem;color:var(--t4);margin-top:1px;font-style:italic">'+exLore(exDef.id)+'</div>')}
+        ${H(exLore(exDef.id,n),'<div style="font-size:.52rem;color:var(--t4);margin-top:1px;font-style:italic">'+exLore(exDef.id,n)+'</div>')}
       </div>
       <div style="display:flex;align-items:center;gap:10px">
         <span class="badge badge-${loadClass(exDef.load)}">${loadEmoji(exDef.load)} ${loadLabel(exDef.load)}</span>
@@ -1542,12 +1524,12 @@ function homeHTML(){
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px">
       <div class="card" style="padding:12px;text-align:center;border-color:var(--p15)">
         <div class="label" style="margin-bottom:4px">Жим ПМ</div>
-        <div class="mono" style="font-size:1.05rem;font-weight:700;color:var(--portal)">${bench.toFixed(1)}</div>
+        <div class="mono" style="font-size:1.05rem;font-weight:700;color:var(--portal)">${roundW(bench,2.5).toFixed(1)}</div>
         <div style="font-size:.48rem;color:var(--t3);margin-top:2px">база ${S.benchPM} кг</div>
       </div>
       <div class="card" style="padding:12px;text-align:center;border-color:var(--r20)">
         <div class="label" style="margin-bottom:4px">Присед ПМ</div>
-        <div class="mono" style="font-size:1.05rem;font-weight:700;color:var(--rick)">${squat.toFixed(1)}</div>
+        <div class="mono" style="font-size:1.05rem;font-weight:700;color:var(--rick)">${roundW(squat,2.5).toFixed(1)}</div>
         <div style="font-size:.48rem;color:var(--t3);margin-top:2px">база ${S.squatPM} кг</div>
       </div>
       <div class="card" style="padding:12px;text-align:center;border-color:var(--m20)">
@@ -1673,7 +1655,7 @@ function workoutHTML(){
           <span class="badge badge-${loadClass(ex.load)}">${loadEmoji(ex.load)} ${loadLabel(ex.load)}</span>
           <span style="font-size:.65rem;color:var(--t3);font-family:var(--font-m)">к${meta.koef}</span>
         </div>
-          ${H(exLore(ex.id),'<div style="font-size:.58rem;color:var(--t3);margin-bottom:10px;font-style:italic">'+exLore(ex.id)+'</div>')}
+          ${H(exLore(ex.id,W.sessionN),'<div style="font-size:.58rem;color:var(--t3);margin-bottom:10px;font-style:italic">'+exLore(ex.id,W.sessionN)+'</div>')}
         </div>
         ${clusters}
         ${mtrRow}
