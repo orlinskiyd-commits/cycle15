@@ -1901,13 +1901,13 @@ function progressHTML(){
         <div style="font-size:.78rem;font-weight:700">${esc(meta.name)}</div>
         <div style="font-size:.56rem;color:var(--t3);margin-top:1px">к${meta.koef} · ${meta.pmOf==='squat'?'присед':'жим'} × ${meta.ratio}</div>
       </div>
-      <div class="mono" style="font-size:.9rem;font-weight:700;color:var(--portal)">${pm.toFixed(1)} кг</div>
+      <div class="mono" style="font-size:.9rem;font-weight:700;color:var(--portal)">${roundW(pm, EX[id].step||2.5).toFixed(1)} кг</div>
     </div>`;
   }).join('');
 
   const forecast=[0,4,8,12,15].map(w=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bd);font-size:.7rem;align-items:center">
     <span style="color:var(--t3)">Нед ${w+1}</span>
-    <span>Жим <b class="mono" style="color:var(--portal)">${growPM(S.benchPM,w,S.corrPct).toFixed(1)}</b> · Присед <b class="mono" style="color:var(--rick)">${growPM(S.squatPM,w,S.corrPct).toFixed(1)}</b> кг</span>
+    <span>Жим <b class="mono" style="color:var(--portal)">${roundW(growPM(S.benchPM,w,S.corrPct),2.5).toFixed(1)}</b> · Присед <b class="mono" style="color:var(--rick)">${roundW(growPM(S.squatPM,w,S.corrPct),2.5).toFixed(1)}</b> кг</span>
   </div>`).join('');
 
   return`<div class="screen">
