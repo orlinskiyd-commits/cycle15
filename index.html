@@ -1135,7 +1135,15 @@ function finishWorkout(){
   S.sessionCount++;S.history=[rec,...S.history].slice(0,300);
   S.workout=null;saveSave();render();
 }
-function doCorrect(){shiftSchedule(S.summary.rec.date);S.summary.needsCorrection=false;S.summary.corrected=true;render();}
+function doCorrect(){
+  shiftSchedule(S.summary.rec.date);
+  // Синхронизируем plannedDate в истории — после сдвига план = факт
+  if(S.history.length){
+    S.history[0].plannedDate = S.history[0].date;
+    saveSave();
+  }
+  S.summary.needsCorrection=false;S.summary.corrected=true;render();
+}
 function skipCorrect(){S.summary.needsCorrection=false;render();}
 function closeSummary(){S.summary=null;S.screen='home';render();}
 
@@ -1297,7 +1305,7 @@ function onPortalTap(){
     const secrets = [
       '🤫 [S1E1] «Wubba lubba dub dub» = «мне очень больно, пожалуйста помогите» на языке Birdperson',
       '🤫 [S1E9] Рик плакал под кроватью у Морти. Единственный раз в сериале.',
-      '🤫 [S4E6] Bird Person переведён как Бёрд Персон. Его настоящее имя — Attila.',
+      '🤫 [S4E6] Bird Person переведён как Птичья Личность. Его настоящее имя — Attila.',
       '🤫 [S3E7] Evil Morty — единственный Морти который НЕ боится Рика.',
       '🤫 [S3E1] McDonald\'s реально вернули Szechuan соус в 2017 после S3E1.',
       '🤫 [S2E10] Tiny Rick написал эмо-песню которую никто не услышал.',
@@ -1953,6 +1961,84 @@ function render(){
   if(S.screen==='progress')c=progressHTML();
   app.innerHTML=c+navHTML(S.screen);
 }
+// ── САМОТЕСТЫ ────────────────────────────────────────────
+// Запускаются при каждой загрузке, молча если всё ок.
+// При сбое — красная строка в консоли с точным описанием.
+(function runTests() {
+  let pass = 0, fail = 0;
+  function t(label, actual, expected) {
+    const ok = Math.abs(actual - expected) < 0.0001;
+    if (ok) { pass++; }
+    else { fail++; console.error(`❌ ТЕСТ: ${label}\n   ожидалось: ${expected}\n   получено:  ${actual}`); }
+  }
+  function tb(label, actual, expected) {
+    if (actual === expected) { pass++; }
+    else { fail++; console.error(`❌ ТЕСТ: ${label}\n   ожидалось: ${expected}\n   получено:  ${actual}`); }
+  }
+
+  // ── roundW ──────────────────────────────────────────────
+  t('roundW: 87.75 → 87.5',        roundW(87.75),       87.5);
+  t('roundW: 135.7 → 135',         roundW(135.7),       135);
+  t('roundW: 88.2 → 87.5',         roundW(88.2),        87.5);
+  t('roundW: 0 → 0',               roundW(0),           0);
+  t('roundW: шаг 5, 83 → 85',      roundW(83, 5),       85);
+  t('roundW: шаг 1, 12.4 → 12',    roundW(12.4, 1),     12);
+
+  // ── growPM ──────────────────────────────────────────────
+  t('growPM: неделя 0 = база',      growPM(135, 0, 0.5),        135);
+  t('growPM: неделя 1, 0.5%',       growPM(135, 1, 0.5),        135.675);
+  t('growPM: неделя 2, 0.5%',       growPM(135, 2, 0.5),        136.353375);
+  t('growPM: неделя 16, 0.5%',      +growPM(100, 16, 0.5).toFixed(4), 108.3071);
+  t('growPM: коррекция 0%',         growPM(130, 8, 0),          130);
+
+  // ── getExPM ─────────────────────────────────────────────
+  t('getExPM: bench1 ratio=1',      getExPM('bench1', 100, 130), 100);
+  t('getExPM: squat ratio=1.0',     getExPM('squat',  100, 130), 130 * EX['squat'].ratio);
+  t('getExPM: bicep ratio',         getExPM('bicep',  100, 130), 100 * EX['bicep'].ratio);
+  t('getExPM: неизвестный id → 0',  getExPM('unknown', 100, 130), 0);
+
+  // ── buildSession ────────────────────────────────────────
+  const sess = buildSession(0, 135, 130);
+  tb('buildSession: есть exercises',   Array.isArray(sess.exercises), true);
+  tb('buildSession: exercises не пуст', sess.exercises.length > 0,    true);
+  // Все веса — числа, не NaN, больше нуля
+  let weightOk = true;
+  sess.exercises.forEach(ex => {
+    ex.clusters.forEach(c => {
+      if (isNaN(c.weight) || c.weight <= 0) weightOk = false;
+    });
+  });
+  tb('buildSession: все веса > 0 и не NaN', weightOk, true);
+  // Все doneSets начинаются с 0
+  let doneOk = true;
+  sess.exercises.forEach(ex => ex.clusters.forEach(c => { if (c.doneSets !== 0) doneOk = false; }));
+  tb('buildSession: doneSets = 0 на старте', doneOk, true);
+
+  // ── exMetrics ───────────────────────────────────────────
+  const fakeClusters = [
+    { weight: 80, reps: 3, numSets: 4, doneSets: 4 },
+    { weight: 90, reps: 2, numSets: 2, doneSets: 2 },
+  ];
+  // Тоннаж: 80×3×4 + 90×2×2 = 960 + 360 = 1320
+  // КПШ:    3×4 + 2×2 = 12 + 4 = 16
+  const m = exMetrics(fakeClusters, 100);
+  t('exMetrics: тоннаж',  m.tonnage, 1320);
+  t('exMetrics: КПШ',     m.kpsh,    16);
+  t('exMetrics: Ср.вес',  m.avg,     1320 / 16);
+  t('exMetrics: ОИ',      m.oi,      (1320 / 16) / 100);
+  // Нет выполненных подходов
+  const m0 = exMetrics([{ weight: 80, reps: 3, numSets: 4, doneSets: 0 }], 100);
+  t('exMetrics: пустой → тоннаж 0', m0.tonnage, 0);
+  t('exMetrics: пустой → ОИ 0',     m0.oi,      0);
+
+  // ── Итог ────────────────────────────────────────────────
+  if (fail === 0) {
+    console.log(`%c✅ Все тесты пройдены (${pass})`, 'color:#39ff14;font-weight:bold');
+  } else {
+    console.warn(`⚠️ Тесты: ${pass} ок, ${fail} провалено`);
+  }
+})();
+
 render();
 </script>
 </body>
